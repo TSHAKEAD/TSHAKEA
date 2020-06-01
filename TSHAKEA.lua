@@ -11,37 +11,8 @@ https   = require("ssl.https")
 sudos   = dofile("sudo.lua")
 bot_id  = token:match("(%d+)")  
 Id_Sudo = Sudo
-List_Sudos = {Id_Sudo,545906637,373906612}
-print("\27[34m"..[[
-
->> Best Source in Telegram
->> Features fast and powerful
-
- /$$$$$$$$        /$$                 /$$                
-|__  $$__/       | $$                | $$                
-   | $$  /$$$$$$$| $$$$$$$   /$$$$$$ | $$   /$$  /$$$$$$ 
-   | $$ /$$_____/| $$__  $$ |____  $$| $$  /$$/ /$$__  $$
-   | $$|  $$$$$$ | $$  \ $$  /$$$$$$$| $$$$$$/ | $$$$$$$$
-   | $$ \____  $$| $$  | $$ /$$__  $$| $$_  $$ | $$_____/
-   | $$ /$$$$$$$/| $$  | $$|  $$$$$$$| $$ \  $$|  $$$$$$$
-   |__/|_______/ |__/  |__/ \_______/|__/  \__/ \_______/
-                                                                                                                                                                         
->> CH > @TSHAKEATEAM
->> CH > @ZX_XX 
->> DEVELOPER > @TAHAJ20
->> DEVELOPER > @VVWVV
-]].."\27[m")
-
+List_Sudos = {Id_Sudo}
 io.popen("mkdir TSHAKEA_Files")
-t = "\27[35m".."\nAll Files Started : \n____________________\n"..'\27[m'
-i = 0
-for v in io.popen('ls TSHAKEA_Files'):lines() do
-if v:match(".lua$") then
-i = i + 1
-t = t.."\27[39m"..i.."\27[36m".." - \27[10;32m"..v..",\27[m \n"
-end
-end
-print(t)
 function vardump(value)  
 print(serpent.block(value, {comment=false}))   
 end 
@@ -399,22 +370,10 @@ user_id_ = user,
 status_ = {ID = "ChatMemberStatusKicked"},},function(arg,data) end,nil)
 end
 
-function AddChannel(User)
-local var = true
-if database:get(bot_id..'add:ch:id') then
-local url , res = https.request("https://api.telegram.org/bot"..token.."/getchatmember?chat_id="..database:get(bot_id..'add:ch:id').."&user_id="..User);
-data = json:decode(url)
-if res ~= 200 or data.result.status == "left" or data.result.status == "kicked" then
-var = false
-end
-end
-return var
-end
-
 function Reply_Status(msg,user_id,status,text)
 tdcli_function ({ID = "GetUser",user_id_ = user_id},function(arg,data) 
 if data.first_name_ ~= false then
-local UserName = (data.username_ or "TSHAKEATEAM")
+local UserName = (data.username_ or "Za_ZX")
 for TSHAKEA in string.gmatch(data.first_name_, "[^%s]+") do
 data.first_name_ = TSHAKEA
 end
@@ -1250,49 +1209,6 @@ end
 return false
 end
 
-if database:get(bot_id.."add:ch:jm" .. msg.chat_id_ .. "" .. msg.sender_user_id_) then 
-if text and text:match("^الغاء$") then 
-sendtext(msg.chat_id_, msg.id_, "📬| تم الغاء الامر ") 
-database:del(bot_id.."add:ch:jm" .. msg.chat_id_ .. "" .. msg.sender_user_id_)  
-return false  end 
-database:del(bot_id.."add:ch:jm" .. msg.chat_id_ .. "" .. msg.sender_user_id_)  
-local username = string.match(text, "@[%a%d_]+") 
-tdcli_function ({    
-ID = "SearchPublicChat",    
-username_ = username  
-},function(arg,data) 
-if data and data.message_ and data.message_ == "USERNAME_NOT_OCCUPIED" then 
-send(msg.chat_id_, msg.id_, '📮| المعرف لا يوجد فيه قناة')
-return false  end
-if data and data.type_ and data.type_.ID and data.type_.ID == 'PrivateChatInfo' then
-send(msg.chat_id_, msg.id_, '📮| عذا لا يمكنك وضع معرف حسابات في الاشتراك ') 
-return false  end
-if data and data.type_ and data.type_.channel_ and data.type_.channel_.is_supergroup_ == true then
-send(msg.chat_id_, msg.id_,'📮| عذا لا يمكنك وضع معرف مجوعه في الاشتراك ') 
-return false  end
-if data and data.type_ and data.type_.channel_ and data.type_.channel_.is_supergroup_ == false then
-if data and data.type_ and data.type_.channel_ and data.type_.channel_.ID and data.type_.channel_.status_.ID == 'ChatMemberStatusEditor' then
-send(msg.chat_id_, msg.id_,'📮| البوت ادمن في القناة \n📮| تم تفعيل الاشتراك الاجباري في \n📮| ايدي القناة ('..data.id_..')\n📮| معرف القناة ([@'..data.type_.channel_.username_..'])') 
-database:set(bot_id..'add:ch:id',data.id_)
-database:set(bot_id..'add:ch:username','@'..data.type_.channel_.username_)
-else
-send(msg.chat_id_, msg.id_,'📮| البوت ليس ادمن في القناة يرجى ترقيته ادمن ثم اعادة المحاوله ') 
-end
-return false  
-end
-end,nil)
-end
-if database:get(bot_id.."textch:user" .. msg.chat_id_ .. "" .. msg.sender_user_id_) then 
-if text and text:match("^الغاء$") then 
-sendtext(msg.chat_id_, msg.id_, "📬| تم الغاء الامر ") 
-database:del(bot_id.."textch:user" .. msg.chat_id_ .. "" .. msg.sender_user_id_)  
-return false  end 
-database:del(bot_id.."textch:user" .. msg.chat_id_ .. "" .. msg.sender_user_id_)  
-local texxt = string.match(text, "(.*)") 
-database:set(bot_id..'text:ch:user',texxt)
-send(msg.chat_id_, msg.id_,'📮| تم تغيير رسالة الاشتراك بنجاح ')
-end
-
 --------------------------------------------------------------------------------------------------------------
 if text and not Vips(msg) then  
 local TSHAKEA_Msg = database:get(bot_id.."TSHAKEA:Add:Filter:Rp2"..text..msg.chat_id_)   
@@ -1368,16 +1284,7 @@ tdcli_function ({ ID = "GetChannelFull",  channel_id_ = msg.chat_id_:gsub("-100"
 Reply_Status(msg,msg.sender_user_id_,"lock","💢️┇تم قفـل التثبيت هنا")  
 return false
 end 
-if text == "قفل التعديل" and msg.reply_to_message_id_ == 0 and Constructor(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end 
+if text == "قفل التعديل" and msg.reply_to_message_id_ == 0 and Constructor(msg) then 
 database:set(bot_id.."TSHAKEA:Lock:edit"..msg.chat_id_,true) 
 Reply_Status(msg,msg.sender_user_id_,"lock","💢️┇تم قفـل تعديل")  
 return false
@@ -1388,15 +1295,6 @@ Reply_Status(msg,msg.sender_user_id_,"lock","💢️┇تم قفـل تعديل"
 return false
 end 
 if text == "قفل الكل" and msg.reply_to_message_id_ == 0 and Constructor(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end  
 database:set(bot_id.."TSHAKEA:Lock:tagservrbot"..msg.chat_id_,true)   
 list ={"Lock:Bot:kick","Lock:User:Name","Lock:hashtak","Lock:Cmd","Lock:Link","Lock:forward","Lock:Keyboard","Lock:geam","Lock:Photo","Lock:Animation","Lock:Video","Lock:Audio","Lock:vico","Lock:Sticker","Lock:Document","Lock:Unsupported","Lock:Markdaun","Lock:Contact","Lock:Spam"}
 for i,lock in pairs(list) do 
@@ -1406,115 +1304,43 @@ Reply_Status(msg,msg.sender_user_id_,"lock","💢️┇تم قفـل جميع ا
 return false
 end 
 --------------------------------------------------------------------------------------------------------------
-if text == "فتح الاضافه" and msg.reply_to_message_id_ == 0 and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end 
+if text == "فتح الاضافه" and msg.reply_to_message_id_ == 0 and Addictive(msg) then 
 database:del(bot_id.."TSHAKEA:Lock:AddMempar"..msg.chat_id_)  
 Reply_Status(msg,msg.sender_user_id_,"unlock","💢️┇تم فتح اضافة الاعضاء")  
 return false
 end 
-if text == "فتح الدردشه" and msg.reply_to_message_id_ == 0 and Owner(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end 
+if text == "فتح الدردشه" and msg.reply_to_message_id_ == 0 and Owner(msg) then 
 database:del(bot_id.."TSHAKEA:Lock:text"..msg.chat_id_)  
 Reply_Status(msg,msg.sender_user_id_,"unlock","💢️┇تم فتح الدردشه")  
 return false
 end 
-if text == "فتح الدخول" and msg.reply_to_message_id_ == 0 and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end 
+if text == "فتح الدخول" and msg.reply_to_message_id_ == 0 and Addictive(msg) then 
 database:del(bot_id.."TSHAKEA:Lock:Join"..msg.chat_id_)  
 Reply_Status(msg,msg.sender_user_id_,"unlock","💢️┇تم فتح دخول الاعضاء")  
 return false
 end 
-if text == "فتح البوتات" and msg.reply_to_message_id_ == 0 and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end 
+if text == "فتح البوتات" and msg.reply_to_message_id_ == 0 and Addictive(msg) then 
 database:del(bot_id.."TSHAKEA:Lock:Bot:kick"..msg.chat_id_)  
 Reply_Status(msg,msg.sender_user_id_,"unlock","💢️┇تم فـتح البوتات")  
 return false
 end 
-if text == "فتح البوتات " and msg.reply_to_message_id_ == 0 and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end 
+if text == "فتح البوتات " and msg.reply_to_message_id_ == 0 and Addictive(msg) then 
 database:del(bot_id.."TSHAKEA:Lock:Bot:kick"..msg.chat_id_)  
 Reply_Status(msg,msg.sender_user_id_,"unlock","🍃\n💢️┇تم فـتح البوتات")  
 return false
 end 
 if text == "فتح الاشعارات" and msg.reply_to_message_id_ == 0 and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end  
 database:del(bot_id.."TSHAKEA:Lock:tagservr"..msg.chat_id_)  
 Reply_Status(msg,msg.sender_user_id_,"unlock","💢️┇تم فـتح الاشعارات")  
 return false
 end 
-if text == "فتح التثبيت" and msg.reply_to_message_id_ == 0 and Constructor(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end 
+if text == "فتح التثبيت" and msg.reply_to_message_id_ == 0 and Constructor(msg) then 
 database:del(bot_id.."TSHAKEA:lockpin"..msg.chat_id_)  
 database:srem(bot_id.."TSHAKEA:Lock:pin",msg.chat_id_)
 Reply_Status(msg,msg.sender_user_id_,"unlock","💢️┇تم فـتح التثبيت هنا")  
 return false
 end 
-if text == "فتح التعديل" and msg.reply_to_message_id_ == 0 and Constructor(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end 
+if text == "فتح التعديل" and msg.reply_to_message_id_ == 0 and Constructor(msg) then 
 database:del(bot_id.."TSHAKEA:Lock:edit"..msg.chat_id_) 
 Reply_Status(msg,msg.sender_user_id_,"unlock","💢️┇تم فـتح تعديل")  
 return false
@@ -1524,16 +1350,7 @@ database:del(bot_id.."TSHAKEA:Lock:edit"..msg.chat_id_)
 Reply_Status(msg,msg.sender_user_id_,"unlock","💢️┇تم فـتح تعديل")  
 return false
 end 
-if text == "فتح الكل" and msg.reply_to_message_id_ == 0 and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end 
+if text == "فتح الكل" and msg.reply_to_message_id_ == 0 and Addictive(msg) then 
 database:del(bot_id.."TSHAKEA:Lock:tagservrbot"..msg.chat_id_)   
 list ={"Lock:Bot:kick","Lock:User:Name","Lock:hashtak","Lock:Cmd","Lock:Link","Lock:forward","Lock:Keyboard","Lock:geam","Lock:Photo","Lock:Animation","Lock:Video","Lock:Audio","Lock:vico","Lock:Sticker","Lock:Document","Lock:Unsupported","Lock:Markdaun","Lock:Contact","Lock:Spam"}
 for i,lock in pairs(list) do 
@@ -1543,16 +1360,7 @@ Reply_Status(msg,msg.sender_user_id_,"unlock","💢️┇تم فـتح جميع 
 return false
 end 
 --------------------------------------------------------------------------------------------------------------
-if text == "قفل الروابط" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "قفل الروابط" and Addictive(msg) then
 database:set(bot_id.."TSHAKEA:Lock:Link"..msg.chat_id_,"del")  
 Reply_Status(msg,msg.sender_user_id_,"lock","💢️┇تم قفـل الروابط")  
 return false
@@ -1572,30 +1380,12 @@ database:set(bot_id.."TSHAKEA:Lock:Link"..msg.chat_id_,"kick")
 Reply_Status(msg,msg.sender_user_id_,"lockkick","💢️┇تم قفـل الروابط")  
 return false
 end 
-if text == "فتح الروابط" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "فتح الروابط" and Addictive(msg) then
 database:del(bot_id.."TSHAKEA:Lock:Link"..msg.chat_id_)  
 Reply_Status(msg,msg.sender_user_id_,"unlock","💢️┇تم فتح الروابط")  
 return false
 end 
-if text == "قفل المعرفات" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "قفل المعرفات" and Addictive(msg) then
 database:set(bot_id.."TSHAKEA:Lock:User:Name"..msg.chat_id_,"del")  
 Reply_Status(msg,msg.sender_user_id_,"lock","💢️┇تم قفـل المعرفات")  
 return false
@@ -1615,30 +1405,12 @@ database:set(bot_id.."TSHAKEA:Lock:User:Name"..msg.chat_id_,"kick")
 Reply_Status(msg,msg.sender_user_id_,"lockkick","💢️┇تم قفـل المعرفات")  
 return false
 end 
-if text == "فتح المعرفات" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "فتح المعرفات" and Addictive(msg) then
 database:del(bot_id.."TSHAKEA:Lock:User:Name"..msg.chat_id_)  
 Reply_Status(msg,msg.sender_user_id_,"unlock","💢️┇تم فتح المعرفات")  
 return false
 end 
-if text == "قفل التاك" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "قفل التاك" and Addictive(msg) then
 database:set(bot_id.."TSHAKEA:Lock:hashtak"..msg.chat_id_,"del")  
 Reply_Status(msg,msg.sender_user_id_,"lock","💢️┇تم قفـل التاك")  
 return false
@@ -1658,16 +1430,7 @@ database:set(bot_id.."TSHAKEA:Lock:hashtak"..msg.chat_id_,"kick")
 Reply_Status(msg,msg.sender_user_id_,"lockkick","💢️┇تم قفـل التاك")  
 return false
 end 
-if text == "فتح التاك" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "فتح التاك" and Addictive(msg) then
 database:del(bot_id.."TSHAKEA:Lock:hashtak"..msg.chat_id_)  
 Reply_Status(msg,msg.sender_user_id_,"unlock","💢️┇تم فتح التاك")  
 return false
@@ -1747,16 +1510,7 @@ database:del(bot_id.."TSHAKEA:Lock:Video"..msg.chat_id_)
 Reply_Status(msg,msg.sender_user_id_,"unlock","💢️┇تم فتح الفيديو")  
 return false
 end 
-if text == "قفل المتحركه" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "قفل المتحركه" and Addictive(msg) then
 database:set(bot_id.."TSHAKEA:Lock:Animation"..msg.chat_id_,"del")  
 Reply_Status(msg,msg.sender_user_id_,"lock","💢️┇تم قفـل المتحركه")  
 return false
@@ -1776,30 +1530,12 @@ database:set(bot_id.."TSHAKEA:Lock:Animation"..msg.chat_id_,"kick")
 Reply_Status(msg,msg.sender_user_id_,"lockkick","💢️┇تم قفـل المتحركه")  
 return false
 end 
-if text == "فتح المتحركه" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "فتح المتحركه" and Addictive(msg) then
 database:del(bot_id.."TSHAKEA:Lock:Animation"..msg.chat_id_)  
 Reply_Status(msg,msg.sender_user_id_,"unlock","💢️┇تم فتح المتحركه")  
 return false
 end 
-if text == "قفل الالعاب" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "قفل الالعاب" and Addictive(msg) then
 database:set(bot_id.."TSHAKEA:Lock:geam"..msg.chat_id_,"del")  
 Reply_Status(msg,msg.sender_user_id_,"lock","💢️┇تم قفـل الالعاب")  
 return false
@@ -1819,16 +1555,7 @@ database:set(bot_id.."TSHAKEA:Lock:geam"..msg.chat_id_,"kick")
 Reply_Status(msg,msg.sender_user_id_,"lockkick","💢️┇تم قفـل الالعاب")  
 return false
 end 
-if text == "فتح الالعاب" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "فتح الالعاب" and Addictive(msg) then
 database:del(bot_id.."TSHAKEA:Lock:geam"..msg.chat_id_)  
 Reply_Status(msg,msg.sender_user_id_,"unlock","💢️┇تم فتح الالعاب")  
 return false
@@ -1908,16 +1635,7 @@ database:del(bot_id.."TSHAKEA:Lock:Keyboard"..msg.chat_id_)
 Reply_Status(msg,msg.sender_user_id_,"unlock","💢️┇تم فتح الكيبورد")  
 return false
 end 
-if text == "قفل الملصقات" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "قفل الملصقات" and Addictive(msg) then
 database:set(bot_id.."TSHAKEA:Lock:Sticker"..msg.chat_id_,"del")  
 Reply_Status(msg,msg.sender_user_id_,"lock","💢️┇تم قفـل الملصقات")  
 return false
@@ -1937,30 +1655,12 @@ database:set(bot_id.."TSHAKEA:Lock:Sticker"..msg.chat_id_,"kick")
 Reply_Status(msg,msg.sender_user_id_,"lockkick","💢️┇تم قفـل الملصقات")  
 return false
 end 
-if text == "فتح الملصقات" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "فتح الملصقات" and Addictive(msg) then
 database:del(bot_id.."TSHAKEA:Lock:Sticker"..msg.chat_id_)  
 Reply_Status(msg,msg.sender_user_id_,"unlock","💢️┇تم فتح الملصقات")  
 return false
 end 
-if text == "قفل التوجيه" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "قفل التوجيه" and Addictive(msg) then
 database:set(bot_id.."TSHAKEA:Lock:forward"..msg.chat_id_,"del")  
 Reply_Status(msg,msg.sender_user_id_,"lock","💢️┇تم قفـل التوجيه")  
 return false
@@ -1980,16 +1680,7 @@ database:set(bot_id.."TSHAKEA:Lock:forward"..msg.chat_id_,"kick")
 Reply_Status(msg,msg.sender_user_id_,"lockkick","💢️┇تم قفـل التوجيه")  
 return false
 end 
-if text == "فتح التوجيه" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "فتح التوجيه" and Addictive(msg) then
 database:del(bot_id.."TSHAKEA:Lock:forward"..msg.chat_id_)  
 Reply_Status(msg,msg.sender_user_id_,"unlock","💢️┇تم فتح التوجيه")  
 return false
@@ -2019,16 +1710,7 @@ database:del(bot_id.."TSHAKEA:Lock:Document"..msg.chat_id_)
 Reply_Status(msg,msg.sender_user_id_,"unlock","💢️┇تم فتح الملفات")  
 return false
 end 
-if text == "قفل السيلفي" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "قفل السيلفي" and Addictive(msg) then
 database:set(bot_id.."TSHAKEA:Lock:Unsupported"..msg.chat_id_,"del")  
 Reply_Status(msg,msg.sender_user_id_,"lock","💢️┇تم قفـل السيلفي")  
 return false
@@ -2048,16 +1730,7 @@ database:set(bot_id.."TSHAKEA:Lock:Unsupported"..msg.chat_id_,"kick")
 Reply_Status(msg,msg.sender_user_id_,"lockkick","💢️┇تم قفـل السيلفي")  
 return false
 end 
-if text == "فتح السيلفي" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "فتح السيلفي" and Addictive(msg) then
 database:del(bot_id.."TSHAKEA:Lock:Unsupported"..msg.chat_id_)  
 Reply_Status(msg,msg.sender_user_id_,"unlock","💢️┇تم فتح السيلفي")  
 return false
@@ -2082,16 +1755,7 @@ database:set(bot_id.."TSHAKEA:Lock:Markdaun"..msg.chat_id_,"kick")
 Reply_Status(msg,msg.sender_user_id_,"lockkick","💢️┇تم قفـل الماركداون")  
 return false
 end 
-if text == "فتح الماركداون" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "فتح الماركداون" and Addictive(msg) then
 database:del(bot_id.."TSHAKEA:Lock:Markdaun"..msg.chat_id_)  
 Reply_Status(msg,msg.sender_user_id_,"unlock","💢️┇تم فتح الماركداون")  
 return false
@@ -2116,16 +1780,7 @@ database:set(bot_id.."TSHAKEA:Lock:Contact"..msg.chat_id_,"kick")
 Reply_Status(msg,msg.sender_user_id_,"lockkick","💢️┇تم قفـل الجهات")  
 return false
 end 
-if text == "فتح الجهات" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "فتح الجهات" and Addictive(msg) then
 database:del(bot_id.."TSHAKEA:Lock:Contact"..msg.chat_id_)  
 Reply_Status(msg,msg.sender_user_id_,"unlock","💢️┇تم فتح الجهات")  
 return false
@@ -2150,16 +1805,7 @@ database:set(bot_id.."TSHAKEA:Lock:Spam"..msg.chat_id_,"kick")
 Reply_Status(msg,msg.sender_user_id_,"lockkick","💢️┇تم قفـل الكلايش")  
 return false
 end 
-if text == "فتح الكلايش" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "فتح الكلايش" and Addictive(msg) then
 database:del(bot_id.."TSHAKEA:Lock:Spam"..msg.chat_id_)  
 Reply_Status(msg,msg.sender_user_id_,"unlock","💢️┇تم فتح الكلايش")  
 return false
@@ -2189,72 +1835,27 @@ database:del(bot_id.."TSHAKEA:Lock:Inlen"..msg.chat_id_)
 Reply_Status(msg,msg.sender_user_id_,"unlock","💢️┇تم فتح الانلاين")  
 return false
 end 
-if text == "قفل التكرار بالطرد" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end 
+if text == "قفل التكرار بالطرد" and Addictive(msg) then 
 database:hset(bot_id.."TSHAKEA:flooding:settings:"..msg.chat_id_ ,"flood","kick")  
 Reply_Status(msg,msg.sender_user_id_,"lockkick","💢️┇تم قفل التكرار")
 return false
 end 
-if text == "قفل التكرار" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end 
+if text == "قفل التكرار" and Addictive(msg) then 
 database:hset(bot_id.."TSHAKEA:flooding:settings:"..msg.chat_id_ ,"flood","del")  
 Reply_Status(msg,msg.sender_user_id_,"lock","💢️┇تم قفل التكرار بالحذف")
 return false
 end 
-if text == "قفل التكرار بالتقيد" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end 
+if text == "قفل التكرار بالتقيد" and Addictive(msg) then 
 database:hset(bot_id.."TSHAKEA:flooding:settings:"..msg.chat_id_ ,"flood","keed")  
 Reply_Status(msg,msg.sender_user_id_,"lockkid","💢️┇تم قفل التكرار")
 return false
 end 
-if text == "قفل التكرار بالكتم" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end 
+if text == "قفل التكرار بالكتم" and Addictive(msg) then 
 database:hset(bot_id.."TSHAKEA:flooding:settings:"..msg.chat_id_ ,"flood","mute")  
 Reply_Status(msg,msg.sender_user_id_,"lockktm","💢️┇تم قفل التكرار")
 return false
 end 
-if text == "فتح التكرار" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end 
+if text == "فتح التكرار" and Addictive(msg) then 
 database:hdel(bot_id.."TSHAKEA:flooding:settings:"..msg.chat_id_ ,"flood")  
 Reply_Status(msg,msg.sender_user_id_,"unlock","💢️┇تم فتح التكرار")
 return false
@@ -2274,83 +1875,29 @@ database:del(bot_id.."TSHAKEA:Basic:Constructor"..msg.chat_id_)
 texts = "✖┇ تم مسح المنشئين الاساسيين"
 send(msg.chat_id_, msg.id_, texts)
 end
-if text == "مسح المنشئين" and BasicConstructor(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "مسح المنشئين" and BasicConstructor(msg) then
 database:del(bot_id.."TSHAKEA:Constructor"..msg.chat_id_)
 texts = "✖┇ تم مسح المنشئين "
 send(msg.chat_id_, msg.id_, texts)
 end
-if text == "مسح المدراء" and Constructor(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "مسح المدراء" and Constructor(msg) then
 database:del(bot_id.."TSHAKEA:Manager"..msg.chat_id_)
 texts = "✖┇ تم مسح المدراء "
 send(msg.chat_id_, msg.id_, texts)
 end
-if text == "مسح الادمنيه" and Owner(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "مسح الادمنيه" and Owner(msg) then
 database:del(bot_id.."TSHAKEA:Mod:User"..msg.chat_id_)
 send(msg.chat_id_, msg.id_, "🗑┇ تم مسح  قائمة الادمنية  ")
 end
-if text == "مسح المميزين" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "مسح المميزين" and Addictive(msg) then
 database:del(bot_id.."TSHAKEA:Special:User"..msg.chat_id_)
 send(msg.chat_id_, msg.id_, "🗑┇ تم مسح  قائمة الاعضاء المميزين  ")
 end
-if text == "مسح المكتومين" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "مسح المكتومين" and Addictive(msg) then
 database:del(bot_id.."TSHAKEA:Muted:User"..msg.chat_id_)
 send(msg.chat_id_, msg.id_, "🗑┇ تم مسح قائمه المكتومين ")
 end
-if text == "مسح المحظورين" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "مسح المحظورين" and Addictive(msg) then
 database:del(bot_id.."TSHAKEA:Ban:User"..msg.chat_id_)
 send(msg.chat_id_, msg.id_, "\n🚷┇تم مسح المحظورين")
 end
@@ -2404,16 +1951,7 @@ end
 send(msg.chat_id_, msg.id_, t)
 return false
 end
-if text == ("المنشئين") and BasicConstructor(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == ("المنشئين") and BasicConstructor(msg) then
 local list = database:smembers(bot_id.."TSHAKEA:Constructor"..msg.chat_id_)
 t = "\n⛔┇قائمة المنشئين \n┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ \n"
 for k,v in pairs(list) do
@@ -2429,16 +1967,7 @@ t = "✖┇لا يوجد منشئين"
 end
 send(msg.chat_id_, msg.id_, t)
 end
-if text == ("المدراء") and Constructor(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == ("المدراء") and Constructor(msg) then
 local list = database:smembers(bot_id.."TSHAKEA:Manager"..msg.chat_id_)
 t = "\n⛔┇قائمة المدراء \n┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ \n"
 for k,v in pairs(list) do
@@ -2454,16 +1983,7 @@ t = "✖┇لا يوجد مدراء"
 end
 send(msg.chat_id_, msg.id_, t)
 end
-if text == ("الادمنيه") and Owner(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == ("الادمنيه") and Owner(msg) then
 local list = database:smembers(bot_id.."TSHAKEA:Mod:User"..msg.chat_id_)
 t = "\n⛔┇قائمة الادمنيه \n┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ \n"
 for k,v in pairs(list) do
@@ -2495,16 +2015,7 @@ t = "✖┇لا يوجد مميزين"
 end
 send(msg.chat_id_, msg.id_, t)
 end
-if text == ("المكتومين") and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == ("المكتومين") and Addictive(msg) then
 local list = database:smembers(bot_id.."TSHAKEA:Muted:User"..msg.chat_id_)
 t = "\n⛔┇قائمة المكتومين \n┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ \n"
 for k,v in pairs(list) do
@@ -2521,16 +2032,7 @@ end
 send(msg.chat_id_, msg.id_, t)
 end
 
-if text == ("المحظورين") then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == ("المحظورين") and Addictive(msg) then
 local list = database:smembers(bot_id.."TSHAKEA:Ban:User"..msg.chat_id_)
 t = "\n⛔┇قائمة محظورين المجموعه \n┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ \n"
 for k,v in pairs(list) do
@@ -2690,16 +2192,7 @@ Reply_Status(msg,userid,"reply","💢┇تم تنزيله من المطورين"
 return false 
 end
 
-if text == ("رفع منشئ اساسي") and tonumber(msg.reply_to_message_id_) ~= 0 and DevBot(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == ("رفع منشئ اساسي") and tonumber(msg.reply_to_message_id_) ~= 0 and DevBot(msg) then 
 function Function_TSHAKEA(extra, result, success)
 database:sadd(bot_id.."TSHAKEA:Basic:Constructor"..msg.chat_id_, result.sender_user_id_)
 Reply_Status(msg,result.sender_user_id_,"reply","💢┇تم ترقيته منشئ اساسي")  
@@ -2707,16 +2200,7 @@ end
 tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumber(msg.reply_to_message_id_)}, Function_TSHAKEA, nil)
 return false
 end
-if text and text:match("^رفع منشئ اساسي @(.*)$") and DevBot(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^رفع منشئ اساسي @(.*)$") and DevBot(msg) then 
 local username = text:match("^رفع منشئ اساسي @(.*)$")
 function Function_TSHAKEA(extra, result, success)
 if result.id_ then
@@ -2733,31 +2217,13 @@ end
 tdcli_function ({ID = "SearchPublicChat",username_ = username}, Function_TSHAKEA, nil)
 return false
 end
-if text and text:match("^رفع منشئ اساسي (%d+)$") and DevBot(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^رفع منشئ اساسي (%d+)$") and DevBot(msg) then 
 local userid = text:match("^رفع منشئ اساسي (%d+)$") 
 database:sadd(bot_id.."TSHAKEA:Basic:Constructor"..msg.chat_id_, userid)
 Reply_Status(msg,userid,"reply","💢┇تم ترقيته منشئ اساسي")  
 return false
 end
-if text == ("تنزيل منشئ اساسي") and tonumber(msg.reply_to_message_id_) ~= 0 and DevBot(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == ("تنزيل منشئ اساسي") and tonumber(msg.reply_to_message_id_) ~= 0 and DevBot(msg) then 
 function Function_TSHAKEA(extra, result, success)
 database:srem(bot_id.."TSHAKEA:Basic:Constructor"..msg.chat_id_, result.sender_user_id_)
 Reply_Status(msg,result.sender_user_id_,"reply","💢┇تم تنزيله من المنشئين")  
@@ -2765,16 +2231,7 @@ end
 tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumber(msg.reply_to_message_id_)}, Function_TSHAKEA, nil)
 return false
 end
-if text and text:match("^تنزيل منشئ اساسي @(.*)$") and DevBot(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^تنزيل منشئ اساسي @(.*)$") and DevBot(msg) then 
 local username = text:match("^تنزيل منشئ اساسي @(.*)$")
 function Function_TSHAKEA(extra, result, success)
 if result.id_ then
@@ -2788,48 +2245,21 @@ end
 tdcli_function ({ID = "SearchPublicChat",username_ = username}, Function_TSHAKEA, nil)
 return false
 end
-if text and text:match("^تنزيل منشئ اساسي (%d+)$") and DevBot(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^تنزيل منشئ اساسي (%d+)$") and DevBot(msg) then 
 local userid = text:match("^تنزيل منشئ اساسي (%d+)$") 
 database:srem(bot_id.."TSHAKEA:Basic:Constructor"..msg.chat_id_, userid)
 Reply_Status(msg,userid,"reply","💢┇تم تنزيله من المنشئين")  
 return false
 end
 
-if text == "رفع منشئ" and tonumber(msg.reply_to_message_id_) ~= 0 and BasicConstructor(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "رفع منشئ" and tonumber(msg.reply_to_message_id_) ~= 0 and BasicConstructor(msg) then 
 function Function_TSHAKEA(extra, result, success)
 database:sadd(bot_id.."TSHAKEA:Constructor"..msg.chat_id_, result.sender_user_id_)
 Reply_Status(msg,result.sender_user_id_,"reply","💢┇تم ترقيته منشئ في المجموعه")  
 end
 tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumber(msg.reply_to_message_id_)}, Function_TSHAKEA, nil)
 end
-if text and text:match("^رفع منشئ @(.*)$") and BasicConstructor(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^رفع منشئ @(.*)$") and BasicConstructor(msg) then 
 local username = text:match("^رفع منشئ @(.*)$")
 function Function_TSHAKEA(extra, result, success)
 if result.id_ then
@@ -2846,16 +2276,7 @@ end
 tdcli_function ({ID = "SearchPublicChat",username_ = username}, Function_TSHAKEA, nil)
 end
 ------------------------------------------------------------------------
-if text and text:match("^رفع منشئ (%d+)$") and BasicConstructor(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^رفع منشئ (%d+)$") and BasicConstructor(msg) then 
 local userid = text:match("^رفع منشئ (%d+)$")
 database:sadd(bot_id.."TSHAKEA:Constructor"..msg.chat_id_, userid)
 Reply_Status(msg,userid,"reply","💢┇تم ترقيته منشئ في المجموعه")  
@@ -2868,16 +2289,7 @@ end
 tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumber(msg.reply_to_message_id_)}, Function_TSHAKEA, nil)
 end
 ------------------------------------------------------------------------
-if text and text:match("^تنزيل منشئ @(.*)$") and BasicConstructor(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^تنزيل منشئ @(.*)$") and BasicConstructor(msg) then 
 local username = text:match("^تنزيل منشئ @(.*)$")
 function Function_TSHAKEA(extra, result, success)
 if result.id_ then
@@ -2890,31 +2302,13 @@ end
 tdcli_function ({ID = "SearchPublicChat",username_ = username}, Function_TSHAKEA, nil)
 end
 ------------------------------------------------------------------------
-if text and text:match("^تنزيل منشئ (%d+)$") and BasicConstructor(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^تنزيل منشئ (%d+)$") and BasicConstructor(msg) then 
 local userid = text:match("^تنزيل منشئ (%d+)$")
 database:srem(bot_id.."TSHAKEA:Constructor"..msg.chat_id_, userid)
 Reply_Status(msg,userid,"reply","💢┇تم تنزيله من المنشئين")  
 end
 
-if text == ("رفع مدير") and tonumber(msg.reply_to_message_id_) ~= 0 and Constructor(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == ("رفع مدير") and tonumber(msg.reply_to_message_id_) ~= 0 and Constructor(msg) then 
 function Function_TSHAKEA(extra, result, success)
 database:sadd(bot_id.."TSHAKEA:Manager"..msg.chat_id_, result.sender_user_id_)
 Reply_Status(msg,result.sender_user_id_,"reply","💢┇تم ترقيته مدير المجموعه")  
@@ -2922,16 +2316,7 @@ end
 tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumber(msg.reply_to_message_id_)}, Function_TSHAKEA, nil)
 return false
 end  
-if text and text:match("^رفع مدير @(.*)$") and Constructor(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^رفع مدير @(.*)$") and Constructor(msg) then 
 local username = text:match("^رفع مدير @(.*)$") 
 function Function_TSHAKEA(extra, result, success)
 if result.id_ then
@@ -2949,31 +2334,13 @@ tdcli_function ({ID = "SearchPublicChat",username_ = username}, Function_TSHAKEA
 return false
 end 
 
-if text and text:match("^رفع مدير (%d+)$") and Constructor(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^رفع مدير (%d+)$") and Constructor(msg) then 
 local userid = text:match("^رفع مدير (%d+)$") 
 database:sadd(bot_id.."TSHAKEA:Manager"..msg.chat_id_, userid)
 Reply_Status(msg,userid,"reply","💢┇تم ترقيته مدير المجموعه")  
 return false
 end  
-if text == ("تنزيل مدير") and tonumber(msg.reply_to_message_id_) ~= 0 and Constructor(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == ("تنزيل مدير") and tonumber(msg.reply_to_message_id_) ~= 0 and Constructor(msg) then 
 function Function_TSHAKEA(extra, result, success)
 database:srem(bot_id.."TSHAKEA:Manager"..msg.chat_id_, result.sender_user_id_)
 Reply_Status(msg,result.sender_user_id_,"reply","💢┇تم تنزيله من المدراء")  
@@ -2981,16 +2348,7 @@ end
 tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumber(msg.reply_to_message_id_)}, Function_TSHAKEA, nil)
 return false
 end  
-if text and text:match("^تنزيل مدير @(.*)$") and Constructor(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^تنزيل مدير @(.*)$") and Constructor(msg) then 
 local username = text:match("^تنزيل مدير @(.*)$")
 function Function_TSHAKEA(extra, result, success)
 if result.id_ then
@@ -3003,32 +2361,14 @@ end
 tdcli_function ({ID = "SearchPublicChat",username_ = username}, Function_TSHAKEA, nil)
 return false
 end  
-if text and text:match("^تنزيل مدير (%d+)$") and Constructor(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^تنزيل مدير (%d+)$") and Constructor(msg) then 
 local userid = text:match("^تنزيل مدير (%d+)$") 
 database:srem(bot_id.."TSHAKEA:Manager"..msg.chat_id_, userid)
 Reply_Status(msg,userid,"reply","💢┇تم تنزيله من المدراء")  
 return false
 end
 
-if text == ("رفع ادمن") and tonumber(msg.reply_to_message_id_) ~= 0 and Owner(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == ("رفع ادمن") and tonumber(msg.reply_to_message_id_) ~= 0 and Owner(msg) then 
 if not Constructor(msg) and database:get(bot_id.."Add:Group:Cheking"..msg.chat_id_) then 
 send(msg.chat_id_, msg.id_,'✖┇لا تستطيع رفع احد وذالك لان تم تعطيل الرفع من قبل المنشئين')
 return false
@@ -3040,16 +2380,7 @@ end
 tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumber(msg.reply_to_message_id_)}, Function_TSHAKEA, nil)
 return false
 end
-if text and text:match("^رفع ادمن @(.*)$") and Owner(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^رفع ادمن @(.*)$") and Owner(msg) then 
 local username = text:match("^رفع ادمن @(.*)$")
 if not Constructor(msg) and database:get(bot_id.."Add:Group:Cheking"..msg.chat_id_) then 
 send(msg.chat_id_, msg.id_,'✖┇لا تستطيع رفع احد وذالك لان تم تعطيل الرفع من قبل المنشئين')
@@ -3070,16 +2401,7 @@ end
 tdcli_function ({ID = "SearchPublicChat",username_ = username}, Function_TSHAKEA, nil)
 return false
 end
-if text and text:match("^رفع ادمن (%d+)$") and Owner(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^رفع ادمن (%d+)$") and Owner(msg) then 
 local userid = text:match("^رفع ادمن (%d+)$")
 if not Constructor(msg) and database:get(bot_id.."Add:Group:Cheking"..msg.chat_id_) then 
 send(msg.chat_id_, msg.id_,'✖┇لا تستطيع رفع احد وذالك لان تم تعطيل الرفع من قبل المنشئين')
@@ -3089,16 +2411,7 @@ database:sadd(bot_id.."TSHAKEA:Mod:User"..msg.chat_id_, userid)
 Reply_Status(msg,userid,"reply","💢┇تم ترقيته ادمن للمجموعه")  
 return false
 end
-if text == ("تنزيل ادمن") and tonumber(msg.reply_to_message_id_) ~= 0 and Owner(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == ("تنزيل ادمن") and tonumber(msg.reply_to_message_id_) ~= 0 and Owner(msg) then 
 function Function_TSHAKEA(extra, result, success)
 database:srem(bot_id.."TSHAKEA:Mod:User"..msg.chat_id_, result.sender_user_id_)
 Reply_Status(msg,result.sender_user_id_,"reply","💢┇تم تنزيله من ادمنيه المجموعه")  
@@ -3106,16 +2419,7 @@ end
 tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumber(msg.reply_to_message_id_)}, Function_TSHAKEA, nil)
 return false
 end
-if text and text:match("^تنزيل ادمن @(.*)$") and Owner(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^تنزيل ادمن @(.*)$") and Owner(msg) then 
 local username = text:match("^تنزيل ادمن @(.*)$") 
 function Function_TSHAKEA(extra, result, success)
 if result.id_ then
@@ -3128,32 +2432,14 @@ end
 tdcli_function ({ID = "SearchPublicChat",username_ = username}, Function_TSHAKEA, nil)
 return false
 end
-if text and text:match("^تنزيل ادمن (%d+)$") and Owner(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^تنزيل ادمن (%d+)$") and Owner(msg) then 
 local userid = text:match("^تنزيل ادمن (%d+)$")
 database:srem(bot_id.."TSHAKEA:Mod:User"..msg.chat_id_, userid)
 Reply_Status(msg,userid,"reply","💢┇تم تنزيله من ادمنيه المجموعه")  
 return false
 end
 
-if text == ("رفع مميز") and tonumber(msg.reply_to_message_id_) ~= 0 and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == ("رفع مميز") and tonumber(msg.reply_to_message_id_) ~= 0 and Addictive(msg) then 
 if not Constructor(msg) and database:get(bot_id.."Add:Group:Cheking"..msg.chat_id_) then 
 send(msg.chat_id_, msg.id_,'✖┇لا تستطيع رفع احد وذالك لان تم تعطيل الرفع من قبل المنشئين')
 return false
@@ -3165,16 +2451,7 @@ end
 tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumber(msg.reply_to_message_id_)}, Function_TSHAKEA, nil)
 return false
 end
-if text and text:match("^رفع مميز @(.*)$") and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^رفع مميز @(.*)$") and Addictive(msg) then 
 local username = text:match("^رفع مميز @(.*)$") 
 if not Constructor(msg) and database:get(bot_id.."Add:Group:Cheking"..msg.chat_id_) then 
 send(msg.chat_id_, msg.id_,'✖┇لا تستطيع رفع احد وذالك لان تم تعطيل الرفع من قبل المنشئين')
@@ -3196,16 +2473,7 @@ tdcli_function ({ID = "SearchPublicChat",username_ = username}, Function_TSHAKEA
 return false
 end
 
-if text and text:match("^رفع مميز (%d+)$") and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^رفع مميز (%d+)$") and Addictive(msg) then 
 local userid = text:match("^رفع مميز (%d+)$")
 if not Constructor(msg) and database:get(bot_id.."Add:Group:Cheking"..msg.chat_id_) then 
 send(msg.chat_id_, msg.id_,'✖┇لا تستطيع رفع احد وذالك لان تم تعطيل الرفع من قبل المنشئين')
@@ -3216,16 +2484,7 @@ Reply_Status(msg,userid,"reply","💢┇تم ترقيته مميز للمجمو�
 return false
 end
 
-if (text == ("تنزيل مميز")) and tonumber(msg.reply_to_message_id_) ~= 0 and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if (text == ("تنزيل مميز")) and tonumber(msg.reply_to_message_id_) ~= 0 and Addictive(msg) then 
 function Function_TSHAKEA(extra, result, success)
 database:srem(bot_id.."TSHAKEA:Special:User"..msg.chat_id_, result.sender_user_id_)
 Reply_Status(msg,result.sender_user_id_,"reply","💢┇تم تنزيله من المميزين")  
@@ -3233,16 +2492,7 @@ end
 tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumber(msg.reply_to_message_id_)}, Function_TSHAKEA, nil)
 return false
 end
-if text and text:match("^تنزيل مميز @(.*)$") and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^تنزيل مميز @(.*)$") and Addictive(msg) then 
 local username = text:match("^تنزيل مميز @(.*)$") 
 function Function_TSHAKEA(extra, result, success)
 if result.id_ then
@@ -3255,31 +2505,19 @@ end
 tdcli_function ({ID = "SearchPublicChat",username_ = username}, Function_TSHAKEA, nil)
 return false
 end
-if text and text:match("^تنزيل مميز (%d+)$") and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^تنزيل مميز (%d+)$") and Addictive(msg) then 
 local userid = text:match("^تنزيل مميز (%d+)$") 
 database:srem(bot_id.."TSHAKEA:Special:User"..msg.chat_id_, userid)
 Reply_Status(msg,userid,"reply","💢┇تم تنزيله من المميزين")  
 return false
 end  
-if text and text:match("رفع (.*)") and tonumber(msg.reply_to_message_id_) > 0 and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("رفع (.*)") and tonumber(msg.reply_to_message_id_) > 0 and Addictive(msg) then 
+local url,res = http.request('http://TSHAKEA.ml/joinch/?id='..msg.sender_user_id_)
+data = JSON.decode(url)
+if data.Ch_Member.TSHAKEA ~= true then
+send(msg.chat_id_,msg.id_,'• اهلا بك عزيزي 🔱 •\n• لايمكنك استخدام البوت ✅ •\n• عليك الاشتراك في القناة 🔽 •\n• [@Za_ZX] ⚜️')   
+return false 
+end 
 local RTPA = text:match("رفع (.*)")
 if database:sismember(bot_id.."TSHAKEA:Coomds"..msg.chat_id_,RTPA) then
 function by_reply(extra, result, success)   
@@ -3305,16 +2543,13 @@ end
 tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
 end
 end
-if text and text:match("تنزيل (.*)") and tonumber(msg.reply_to_message_id_) > 0 and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("تنزيل (.*)") and tonumber(msg.reply_to_message_id_) > 0 and Addictive(msg) then 
+local url,res = http.request('http://TSHAKEA.ml/joinch/?id='..msg.sender_user_id_)
+data = JSON.decode(url)
+if data.Ch_Member.TSHAKEA ~= true then
+send(msg.chat_id_,msg.id_,'• اهلا بك عزيزي 🔱 •\n• لايمكنك استخدام البوت ✅ •\n• عليك الاشتراك في القناة 🔽 •\n• [@Za_ZX] ⚜️')   
+return false 
+end 
 local RTPA = text:match("تنزيل (.*)")
 if database:sismember(bot_id.."TSHAKEA:Coomds"..msg.chat_id_,RTPA) then
 function by_reply(extra, result, success)   
@@ -3340,16 +2575,13 @@ end
 tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
 end
 end
-if text and text:match("^رفع (.*) @(.*)") and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^رفع (.*) @(.*)") and Addictive(msg) then 
+local url,res = http.request('http://TSHAKEA.ml/joinch/?id='..msg.sender_user_id_)
+data = JSON.decode(url)
+if data.Ch_Member.TSHAKEA ~= true then
+send(msg.chat_id_,msg.id_,'• اهلا بك عزيزي 🔱 •\n• لايمكنك استخدام البوت ✅ •\n• عليك الاشتراك في القناة 🔽 •\n• [@Za_ZX] ⚜️')   
+return false 
+end 
 local text1 = {string.match(text, "^(رفع) (.*) @(.*)$")}
 if database:sismember(bot_id.."TSHAKEA:Coomds"..msg.chat_id_,text1[2]) then
 function py_username(extra, result, success)   
@@ -3378,16 +2610,13 @@ end
 tdcli_function ({ID = "SearchPublicChat",username_ = text1[3]},py_username,nil) 
 end 
 end
-if text and text:match("^تنزيل (.*) @(.*)") and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^تنزيل (.*) @(.*)") and Addictive(msg) then 
+local url,res = http.request('http://TSHAKEA.ml/joinch/?id='..msg.sender_user_id_)
+data = JSON.decode(url)
+if data.Ch_Member.TSHAKEA ~= true then
+send(msg.chat_id_,msg.id_,'• اهلا بك عزيزي 🔱 •\n• لايمكنك استخدام البوت ✅ •\n• عليك الاشتراك في القناة 🔽 •\n• [@Za_ZX] ⚜️')   
+return false 
+end 
 local text1 = {string.match(text, "^(تنزيل) (.*) @(.*)$")}
 if database:sismember(bot_id.."TSHAKEA:Coomds"..msg.chat_id_,text1[2]) then
 function py_username(extra, result, success)   
@@ -3417,16 +2646,7 @@ tdcli_function ({ID = "SearchPublicChat",username_ = text1[3]},py_username,nil)
 end  
 end
 
-if text == ("حظر") and msg.reply_to_message_id_ ~= 0 and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == ("حظر") and msg.reply_to_message_id_ ~= 0 and Addictive(msg) then
 if not Constructor(msg) and database:get(bot_id.."Ban:Cheking"..msg.chat_id_) then 
 send(msg.chat_id_, msg.id_,'💢┇لقد تم تعطيل الحظر و الطرد من قبل المنشئين')
 return false
@@ -3454,16 +2674,7 @@ tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumbe
 return false
 end
 
-if text and text:match("^حظر @(.*)$") and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^حظر @(.*)$") and Addictive(msg) then
 local username = text:match("^حظر @(.*)$")
 if not Constructor(msg) and database:get(bot_id.."Ban:Cheking"..msg.chat_id_) then 
 send(msg.chat_id_, msg.id_,'💢┇لقد تم تعطيل الحظر و الطرد من قبل المنشئين')
@@ -3500,16 +2711,7 @@ tdcli_function ({ID = "SearchPublicChat",username_ = username}, Function_TSHAKEA
 return false
 end
 
-if text and text:match("^حظر (%d+)$") and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^حظر (%d+)$") and Addictive(msg) then
 local userid = text:match("^حظر (%d+)$") 
 if not Constructor(msg) and database:get(bot_id.."Ban:Cheking"..msg.chat_id_) then 
 send(msg.chat_id_, msg.id_,'💢┇لقد تم تعطيل الحظر و الطرد من قبل المنشئين')
@@ -3534,16 +2736,7 @@ end,nil)
 end
 return false
 end
-if text == ("الغاء حظر") and tonumber(msg.reply_to_message_id_) ~= 0 and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == ("الغاء حظر") and tonumber(msg.reply_to_message_id_) ~= 0 and Addictive(msg) then
 function Function_TSHAKEA(extra, result, success)
 if tonumber(result.sender_user_id_) == tonumber(bot_id) then
 send(msg.chat_id_, msg.id_, "☑️┇انا لست محظورا \n") 
@@ -3557,16 +2750,7 @@ tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumbe
 return false
 end
  
-if text and text:match("^الغاء حظر @(.*)$") and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^الغاء حظر @(.*)$") and Addictive(msg) then
 local username = text:match("^الغاء حظر @(.*)$") 
 function Function_TSHAKEA(extra, result, success)
 if result.id_ then
@@ -3585,16 +2769,7 @@ tdcli_function ({ID = "SearchPublicChat",username_ = username}, Function_TSHAKEA
 return false
 end
 
-if text and text:match("^الغاء حظر (%d+)$") and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^الغاء حظر (%d+)$") and Addictive(msg) then
 local userid = text:match("^الغاء حظر (%d+)$") 
 if tonumber(userid) == tonumber(bot_id) then
 send(msg.chat_id_, msg.id_, "☑️┇انا لست محظورا \n") 
@@ -3606,16 +2781,7 @@ Reply_Status(msg,userid,"reply","💢┇تم الغاء حظره من هنا")
 return false
 end
 
-if text == ("كتم") and msg.reply_to_message_id_ ~= 0 and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == ("كتم") and msg.reply_to_message_id_ ~= 0 and Addictive(msg) then
 function Function_TSHAKEA(extra, result, success)
 if Rank_Checking(result.sender_user_id_, msg.chat_id_) == true then
 send(msg.chat_id_, msg.id_, "\n💢┇عذرا لا تستطيع طرد او حظر او كتم او تقييد ( "..Get_Rank(result.sender_user_id_,msg.chat_id_).." )")
@@ -3631,16 +2797,7 @@ end
 tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumber(msg.reply_to_message_id_)}, Function_TSHAKEA, nil)
 return false
 end
-if text and text:match("^كتم @(.*)$") and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^كتم @(.*)$") and Addictive(msg) then
 local username = text:match("^كتم @(.*)$")
 if msg.can_be_deleted_ == false then 
 send(msg.chat_id_, msg.id_,"🚸┇البوت ليس ادمن يرجى ترقيتي !") 
@@ -3665,16 +2822,7 @@ end
 tdcli_function ({ID = "SearchPublicChat",username_ = username}, Function_TSHAKEA, nil)
 return false
 end
-if text and text:match("^كتم (%d+)$") and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^كتم (%d+)$") and Addictive(msg) then
 local userid = text:match("^كتم (%d+)$")
 if Rank_Checking(userid, msg.chat_id_) == true then
 send(msg.chat_id_, msg.id_, "\n💢┇عذرا لا تستطيع طرد او حظر او كتم او تقييد ( "..Get_Rank(userid,msg.chat_id_).." )")
@@ -3688,16 +2836,7 @@ Reply_Status(msg,userid,"reply","💢┇تم كتمه من هنا")
 end
 return false
 end
-if text == ("الغاء كتم") and tonumber(msg.reply_to_message_id_) ~= 0 and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == ("الغاء كتم") and tonumber(msg.reply_to_message_id_) ~= 0 and Addictive(msg) then
 function Function_TSHAKEA(extra, result, success)
 database:srem(bot_id.."TSHAKEA:Muted:User"..msg.chat_id_, result.sender_user_id_)
 Reply_Status(msg,result.sender_user_id_,"reply","💢┇تم الغاء كتمه من هنا")  
@@ -3719,32 +2858,14 @@ tdcli_function ({ID = "SearchPublicChat",username_ = username}, Function_TSHAKEA
 return false
 end
 
-if text and text:match("^الغاء كتم (%d+)$") and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^الغاء كتم (%d+)$") and Addictive(msg) then
 local userid = text:match("^الغاء كتم (%d+)$") 
 database:srem(bot_id.."TSHAKEA:Muted:User"..msg.chat_id_, userid)
 Reply_Status(msg,userid,"reply","💢┇تم الغاء كتمه من هنا")  
 return false
 end
 
-if text == ("تقيد") and tonumber(msg.reply_to_message_id_) ~= 0 and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == ("تقيد") and tonumber(msg.reply_to_message_id_) ~= 0 and Addictive(msg) then
 function Function_TSHAKEA(extra, result, success)
 if Rank_Checking(result.sender_user_id_, msg.chat_id_) then
 send(msg.chat_id_, msg.id_, "\n💢┇عذرا لا تستطيع طرد او حظر او كتم او تقييد ( "..Get_Rank(result.sender_user_id_,msg.chat_id_).." )")
@@ -3757,16 +2878,7 @@ tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumbe
 return false
 end
 ------------------------------------------------------------------------
-if text and text:match("^تقيد @(.*)$") and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^تقيد @(.*)$") and Addictive(msg) then
 local username = text:match("^تقيد @(.*)$")
 function Function_TSHAKEA(extra, result, success)
 if result.id_ then
@@ -3788,16 +2900,7 @@ tdcli_function ({ID = "SearchPublicChat",username_ = username}, Function_TSHAKEA
 return false
 end
 ------------------------------------------------------------------------
-if text and text:match("^تقيد (%d+)$") and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^تقيد (%d+)$") and Addictive(msg) then
 local userid = text:match("^تقيد (%d+)$")
 if Rank_Checking(userid, msg.chat_id_) then
 send(msg.chat_id_, msg.id_, "\n💢┇عذرا لا تستطيع طرد او حظر او كتم او تقييد ( "..Get_Rank(userid,msg.chat_id_).." )")
@@ -3807,17 +2910,71 @@ Reply_Status(msg,userid,"reply","💢┇تم تقييده في المجموعه"
 end
 return false
 end
-------------------------------------------------------------------------
-if text == ("الغاء تقيد") and tonumber(msg.reply_to_message_id_) ~= 0 and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
+if text and text:match('^تقيد (%d+) (.*)$') and tonumber(msg.reply_to_message_id_) ~= 0 and Addictive(msg) then
+local TextEnd = {string.match(text, "^(تقيد) (%d+) (.*)$")}
+function Function_TSHAKEA(extra, result, success)
+if TextEnd[3] == 'يوم' then
+Time_Restrict = TextEnd[2]:match('(%d+)')
+Time = Time_Restrict * 86400
 end
+if TextEnd[3] == 'ساعه' then
+Time_Restrict = TextEnd[2]:match('(%d+)')
+Time = Time_Restrict * 3600
+end
+if TextEnd[3] == 'دقيقه' then
+Time_Restrict = TextEnd[2]:match('(%d+)')
+Time = Time_Restrict * 60
+end
+TextEnd[3] = TextEnd[3]:gsub('دقيقه',"دقايق") 
+TextEnd[3] = TextEnd[3]:gsub('ساعه',"ساعات") 
+TextEnd[3] = TextEnd[3]:gsub("يوم","ايام") 
+if Rank_Checking(result.sender_user_id_, msg.chat_id_) then
+send(msg.chat_id_, msg.id_, "\n💢┇عذرا لا تستطيع طرد او حظر او كتم او تقييد ( "..Get_Rank(result.sender_user_id_,msg.chat_id_).." )")
+else
+Reply_Status(msg,result.sender_user_id_,"reply", "☑┇تم تقيده لمدة ~ { "..TextEnd[2]..' '..TextEnd[3]..'}')
+https.request("https://api.telegram.org/bot"..token.."/restrictChatMember?chat_id="..msg.chat_id_.."&user_id="..result.sender_user_id_..'&until_date='..tonumber(msg.date_+Time))
+end
+end
+tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumber(msg.reply_to_message_id_)}, Function_TSHAKEA, nil)
 return false
 end
+
+if text and text:match('^تقيد (%d+) (.*) @(.*)$') and Addictive(msg) then
+local TextEnd = {string.match(text, "^(تقيد) (%d+) (.*) @(.*)$")}
+function Function_TSHAKEA(extra, result, success)
+if result.id_ then
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+send(msg.chat_id_,msg.id_,"💢┇عذرا عزيزي المستخدم هاذا معرف قناة يرجى استخدام الامر بصوره صحيحه !")   
+return false 
+end      
+if TextEnd[3] == 'يوم' then
+Time_Restrict = TextEnd[2]:match('(%d+)')
+Time = Time_Restrict * 86400
+end
+if TextEnd[3] == 'ساعه' then
+Time_Restrict = TextEnd[2]:match('(%d+)')
+Time = Time_Restrict * 3600
+end
+if TextEnd[3] == 'دقيقه' then
+Time_Restrict = TextEnd[2]:match('(%d+)')
+Time = Time_Restrict * 60
+end
+TextEnd[3] = TextEnd[3]:gsub('دقيقه',"دقايق") 
+TextEnd[3] = TextEnd[3]:gsub('ساعه',"ساعات") 
+TextEnd[3] = TextEnd[3]:gsub("يوم","ايام") 
+if Rank_Checking(result.id_, msg.chat_id_) then
+send(msg.chat_id_, msg.id_, "\n💢┇عذرا لا تستطيع طرد او حظر او كتم او تقييد ( "..Get_Rank(result.id_,msg.chat_id_).." )")
+else
+Reply_Status(msg,result.id_,"reply", "☑┇تم تقيده لمدة ~ { "..TextEnd[2]..' '..TextEnd[3]..'}')
+https.request("https://api.telegram.org/bot"..token.."/restrictChatMember?chat_id="..msg.chat_id_.."&user_id="..result.id_..'&until_date='..tonumber(msg.date_+Time))
+end
+end
+end
+tdcli_function ({ID = "SearchPublicChat",username_ = TextEnd[4]}, Function_TSHAKEA, nil)
+return false
+end
+------------------------------------------------------------------------
+if text == ("الغاء تقيد") and tonumber(msg.reply_to_message_id_) ~= 0 and Addictive(msg) then
 function Function_TSHAKEA(extra, result, success)
 https.request("https://api.telegram.org/bot" .. token .. "/restrictChatMember?chat_id=" .. msg.chat_id_ .. "&user_id=" .. result.sender_user_id_ .. "&can_send_messages=True&can_send_media_messages=True&can_send_other_messages=True&can_add_web_page_previews=True")
 Reply_Status(msg,result.sender_user_id_,"reply","💢┇تم الغاء تقييده")  
@@ -3826,16 +2983,7 @@ tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumbe
 return false
 end
 ------------------------------------------------------------------------
-if text and text:match("^الغاء تقيد @(.*)$") and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^الغاء تقيد @(.*)$") and Addictive(msg) then
 local username = text:match("^الغاء تقيد @(.*)$")
 function Function_TSHAKEA(extra, result, success)
 if result.id_ then
@@ -3849,31 +2997,13 @@ tdcli_function ({ID = "SearchPublicChat",username_ = username}, Function_TSHAKEA
 return false
 end
 ------------------------------------------------------------------------
-if text and text:match("^الغاء تقيد (%d+)$") and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^الغاء تقيد (%d+)$") and Addictive(msg) then
 local userid = text:match("^الغاء تقيد (%d+)$")
 https.request("https://api.telegram.org/bot" .. token .. "/restrictChatMember?chat_id=" .. msg.chat_id_ .. "&user_id=" ..userid.. "&can_send_messages=True&can_send_media_messages=True&can_send_other_messages=True&can_add_web_page_previews=True")
 Reply_Status(msg,userid,"reply","💢┇تم الغاء تقييده")  
 return false
 end
-if text == ("طرد") and msg.reply_to_message_id_ ~=0 and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == ("طرد") and msg.reply_to_message_id_ ~=0 and Addictive(msg) then
 if not Constructor(msg) and database:get(bot_id.."Ban:Cheking"..msg.chat_id_) then 
 send(msg.chat_id_, msg.id_,'💢┇لقد تم تعطيل الحظر و الطرد من قبل المنشئين')
 return false
@@ -3899,16 +3029,7 @@ end
 tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumber(msg.reply_to_message_id_)}, Function_TSHAKEA, nil)
 return false
 end  
-if text and text:match("^طرد @(.*)$") and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end 
+if text and text:match("^طرد @(.*)$") and Addictive(msg) then 
 local username = text:match("^طرد @(.*)$")
 if not Constructor(msg) and database:get(bot_id.."Ban:Cheking"..msg.chat_id_) then 
 send(msg.chat_id_, msg.id_,'💢┇لقد تم تعطيل الحظر و الطرد من قبل المنشئين')
@@ -3944,16 +3065,7 @@ tdcli_function ({ID = "SearchPublicChat",username_ = username}, Function_TSHAKEA
 return false
 end  
 
-if text and text:match("^طرد (%d+)$") and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end 
+if text and text:match("^طرد (%d+)$") and Addictive(msg) then 
 local userid = text:match("^طرد (%d+)$") 
 if not Constructor(msg) and database:get(bot_id.."Ban:Cheking"..msg.chat_id_) then 
 send(msg.chat_id_, msg.id_,'💢┇لقد تم تعطيل الحظر و الطرد من قبل المنشئين')
@@ -3978,64 +3090,28 @@ end
 return false
 end
 
-if text == "تعطيل الطرد" or text == "تعطيل الحظر" then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "تعطيل الطرد" or text == "تعطيل الحظر" then
 if Constructor(msg) then
 database:set(bot_id.."Ban:Cheking"..msg.chat_id_,"true")
 send(msg.chat_id_, msg.id_, '🔏┇تم تعطيل » الحظر ~ والطرد ')
 return false
 end
 end
-if text == "تفعيل الطرد" or text == "تفعيل الحظر" then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "تفعيل الطرد" or text == "تفعيل الحظر" then
 if Constructor(msg) then
 database:del(bot_id.."Ban:Cheking"..msg.chat_id_)
 send(msg.chat_id_, msg.id_, '☑┇تم تفعيل » الحظر ~ والطرد ')
 return false
 end
 end
-if text == "تعطيل الرفع" or text == "تعطيل الترقيه" then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "تعطيل الرفع" or text == "تعطيل الترقيه" then
 if Constructor(msg) then
 database:set(bot_id.."Add:Group:Cheking"..msg.chat_id_,"true")
 send(msg.chat_id_, msg.id_, '🔏┇تم تعطيل رفع » الادمن ~ المميز ')
 return false
 end
 end
-if text == "تفعيل الرفع" or text == "تفعيل الترقيه" then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "تفعيل الرفع" or text == "تفعيل الترقيه" then
 if Constructor(msg) then
 database:del(bot_id.."Add:Group:Cheking"..msg.chat_id_)
 send(msg.chat_id_, msg.id_, '☑┇تم تفعيل رفع » الادمن ~ المميز ')
@@ -4043,15 +3119,6 @@ return false
 end
 end
 if text ==("تثبيت") and msg.reply_to_message_id_ ~= 0 and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 if database:sismember(bot_id.."TSHAKEA:Lock:pin",msg.chat_id_) and not Constructor(msg) then
 send(msg.chat_id_,msg.id_,"📬┇التثبيت والغاء التثبيت تم قفله من قبل المنشئين")  
 return false  
@@ -4068,15 +3135,6 @@ end
 end,nil) 
 end
 if text == "الغاء التثبيت" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 if database:sismember(bot_id.."TSHAKEA:Lock:pin",msg.chat_id_) and not Constructor(msg) then
 send(msg.chat_id_,msg.id_,"📬┇التثبيت والغاء التثبيت تم قفله من قبل المنشئين")  
 return false  
@@ -4104,15 +3162,6 @@ database:hset(bot_id.."TSHAKEA:flooding:settings:"..msg.chat_id_ ,"floodtime" ,N
 send(msg.chat_id_, msg.id_,"📮┇تم وضع زمن التكرار ("..Num..")") 
 end
 if text == "ضع رابط" or text == "وضع رابط" then
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 if msg.reply_to_message_id_ == 0  and Addictive(msg) then  
 send(msg.chat_id_,msg.id_,"📥┇ارسل رابط المجموعه او رابط قناة المجموعه")
 database:setex(bot_id.."TSHAKEA:Set:Priovate:Group:Link"..msg.chat_id_..""..msg.sender_user_id_,120,true) 
@@ -4120,15 +3169,6 @@ return false
 end
 end
 if text == "تفعيل جلب الرابط" or text == 'تفعيل الرابط' then
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 if Addictive(msg) then  
 database:set(bot_id.."TSHAKEA:Link_Group"..msg.chat_id_,true) 
 send(msg.chat_id_, msg.id_,"📮┇تم تفعيل جلب الرابط المجموعه") 
@@ -4136,30 +3176,12 @@ return false
 end
 end
 if text == "تعطيل جلب الرابط" or text == 'تعطيل الرابط' then
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 if Addictive(msg) then  
 database:del(bot_id.."TSHAKEA:Link_Group"..msg.chat_id_) 
 send(msg.chat_id_, msg.id_,"☑┇تم تعطيل جلب رابط المجموعه") 
 return false end
 end
 if text == "الرابط" then 
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 local status_Link = database:get(bot_id.."TSHAKEA:Link_Group"..msg.chat_id_)
 if not status_Link then
 send(msg.chat_id_, msg.id_,"☑┇جلب الرابط معطل") 
@@ -4173,15 +3195,6 @@ send(msg.chat_id_, msg.id_,"📫┇لا يوجد رابط ارسل ضع رابط
 end            
 end
 if text == "مسح الرابط" or text == "حذف الرابط" then
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 if Addictive(msg) then     
 send(msg.chat_id_,msg.id_,"☑┇تم مسح الرابط ")           
 database:del(bot_id.."TSHAKEA:Private:Group:Link"..msg.chat_id_) 
@@ -4190,29 +3203,11 @@ end
 return false  
 end
 if text and text:match("^ضع صوره") and Addictive(msg) and msg.reply_to_message_id_ == 0 or text and text:match("^وضع صوره") and Addictive(msg) and msg.reply_to_message_id_ == 0 then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 database:set(bot_id.."TSHAKEA:Change:Chat:Photo"..msg.chat_id_..":"..msg.sender_user_id_,true) 
 send(msg.chat_id_, msg.id_,"🎇┇ارسل لي الصوره") 
 return false
 end
 if text == "حذف الصوره" or text == "مسح الصوره" then 
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 if Addictive(msg) then
 https.request("https://api.telegram.org/bot"..token.."/deleteChatPhoto?chat_id="..msg.chat_id_) 
 send(msg.chat_id_, msg.id_,"☑┇تم ازالة صورة المجموعه") 
@@ -4220,15 +3215,6 @@ end
 return false  
 end
 if text == "ضع وصف" or text == "وضع وصف" then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 if Addictive(msg) then
 database:setex(bot_id.."TSHAKEA:Set:Description" .. msg.chat_id_ .. "" .. msg.sender_user_id_, 120, true)  
 send(msg.chat_id_, msg.id_,"📥┇ارسل الان الوصف")
@@ -4236,15 +3222,6 @@ end
 return false  
 end
 if text == "ضع ترحيب" or text == "وضع ترحيب" then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 if Addictive(msg) then
 database:setex(bot_id.."TSHAKEA:Welcome:Group" .. msg.chat_id_ .. "" .. msg.sender_user_id_, 120, true)  
 t  = "🔖┇ارسل لي الترحيب الان"
@@ -4254,15 +3231,6 @@ end
 return false  
 end
 if text == "الترحيب" and Addictive(msg) then 
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 if database:get(bot_id.."TSHAKEA:Get:Welcome:Group"..msg.chat_id_)   then 
 Welcome = database:get(bot_id.."TSHAKEA:Get:Welcome:Group"..msg.chat_id_)  
 else 
@@ -4272,43 +3240,16 @@ send(msg.chat_id_, msg.id_,"["..Welcome.."]")
 return false  
 end
 if text == "تفعيل الترحيب" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 database:set(bot_id.."TSHAKEA:Chek:Welcome"..msg.chat_id_,true) 
 send(msg.chat_id_, msg.id_,"☑┇تم تفعيل ترحيب المجموعه") 
 return false  
 end
 if text == "تعطيل الترحيب" and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 database:del(bot_id.."TSHAKEA:Chek:Welcome"..msg.chat_id_) 
 send(msg.chat_id_, msg.id_,"☑┇تم تعطيل ترحيب المجموعه") 
 return false  
 end
 if text == "مسح الترحيب" or text == "حذف الترحيب" then 
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 if Addictive(msg) then
 database:del(bot_id.."TSHAKEA:Get:Welcome:Group"..msg.chat_id_) 
 send(msg.chat_id_, msg.id_,"☑┇تم ازالة ترحيب المجموعه") 
@@ -4317,15 +3258,6 @@ return false
 end
 
 if text == "مسح قائمه المنع" and Addictive(msg) then   
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 local list = database:smembers(bot_id.."TSHAKEA:List:Filter"..msg.chat_id_)  
 for k,v in pairs(list) do  
 database:del(bot_id.."TSHAKEA:Add:Filter:Rp1"..msg.sender_user_id_..msg.chat_id_)  
@@ -4335,16 +3267,7 @@ end
 send(msg.chat_id_, msg.id_,"☑┇تم مسح قائمه المنع")  
 end
 
-if text == "قائمه المنع" and Addictive(msg) then  
- if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "قائمه المنع" and Addictive(msg) then   
 local list = database:smembers(bot_id.."TSHAKEA:List:Filter"..msg.chat_id_)  
 t = "\n⛔┇قائمة المنع \n┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ \n"
 for k,v in pairs(list) do  
@@ -4384,15 +3307,6 @@ return false  end
 end
 
 if text == "الغاء منع" and msg.reply_to_message_id_ == 0 and Addictive(msg) then    
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 send(msg.chat_id_, msg.id_,"🔖┇ارسل الكلمه الان")  
 database:set(bot_id.."TSHAKEA:Add:Filter:Rp1"..msg.sender_user_id_..msg.chat_id_,"reppp")  
 return false  end
@@ -4407,15 +3321,6 @@ return false  end
 end
 
 if text == "مسح البوتات" and Addictive(msg) then 
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 tdcli_function ({ ID = "GetChannelMembers",channel_id_ = msg.chat_id_:gsub("-100",""),filter_ = {ID = "ChannelMembersBots"},offset_ = 0,limit_ = 100 },function(arg,tah)  
 local admins = tah.members_  
 local x = 0
@@ -4438,15 +3343,6 @@ end
 end,nil)  
 end   
 if text == ("كشف البوتات") and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 tdcli_function ({ID = "GetChannelMembers",channel_id_ = msg.chat_id_:gsub("-100",""),filter_ = {ID = "ChannelMembersBots"},offset_ = 0,limit_ = 100 },function(extra,result,success)
 local admins = result.members_  
 text = "\n⛔┇قائمة البوتات الموجوده \n┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ \n"
@@ -4489,45 +3385,18 @@ database:del(bot_id.."TSHAKEA:Set:Rules:" .. msg.chat_id_ .. ":" .. msg.sender_u
 end  
 
 if text == "ضع قوانين" or text == "وضع قوانين" then 
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 if Addictive(msg) then
 database:setex(bot_id.."TSHAKEA:Set:Rules:" .. msg.chat_id_ .. ":" .. msg.sender_user_id_, 600, true) 
 send(msg.chat_id_,msg.id_,"🔖┇ارسل لي القوانين الان")  
 end
 end
 if text == "مسح القوانين" or text == "حذف القوانين" then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 if Addictive(msg) then
 send(msg.chat_id_, msg.id_,"🔖┇تم ازالة قوانين المجموعه")  
 database:del(bot_id.."TSHAKEA:Set:Rules:Group"..msg.chat_id_) 
 end
 end
 if text == "القوانين" then 
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 local Set_Rules = database:get(bot_id.."TSHAKEA:Set:Rules:Group" .. msg.chat_id_)   
 if Set_Rules then     
 send(msg.chat_id_,msg.id_, Set_Rules)   
@@ -4537,15 +3406,6 @@ end
 end
 
 if text == "الاوامر المضافه" and Constructor(msg) then
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 local list = database:smembers(bot_id.."TSHAKEA:List:Cmd:Group:New"..msg.chat_id_.."")
 t = "🔰┇قائمه الاوامر المضافه  \n┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ \n"
 for k,v in pairs(list) do
@@ -4562,15 +3422,6 @@ end
 send(msg.chat_id_, msg.id_,"["..t.."]")
 end
 if text == "حذف الاوامر المضافه" or text == "مسح الاوامر المضافه" then
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 if Constructor(msg) then 
 local list = database:smembers(bot_id.."TSHAKEA:List:Cmd:Group:New"..msg.chat_id_)
 for k,v in pairs(list) do
@@ -4581,29 +3432,11 @@ send(msg.chat_id_, msg.id_,"🔰┇تم مسح جميع الاوامر التي 
 end
 end
 if text == "اضف امر" and Constructor(msg) then
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 database:set(bot_id.."TSHAKEA:Set:Cmd:Group"..msg.chat_id_..":"..msg.sender_user_id_,"true") 
 send(msg.chat_id_, msg.id_,"🔰┇الان ارسل لي الامر القديم ..")  
 return false
 end
 if text == "حذف امر" or text == "مسح امر" then 
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 if Constructor(msg) then
 database:set(bot_id.."TSHAKEA:Del:Cmd:Group"..msg.chat_id_..":"..msg.sender_user_id_,"true") 
 send(msg.chat_id_, msg.id_,"🔰┇ارسل الامر الذي قم بوضعه بدلا عن القديم")  
@@ -4612,15 +3445,6 @@ end
 end
 
 if text == "الصلاحيات" and Addictive(msg) then 
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 local list = database:smembers(bot_id.."TSHAKEA:Coomds"..msg.chat_id_)
 if #list == 0 then
 send(msg.chat_id_, msg.id_,"🔖┇لا توجد صلاحيات مضافه")
@@ -4646,15 +3470,6 @@ end
 send(msg.chat_id_, msg.id_,"🔘┇تم مسح الصلاحيات")
 end
 if text and text:match("^اضف صلاحيه (.*)$") and Addictive(msg) then 
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 ComdNew = text:match("^اضف صلاحيه (.*)$")
 database:set(bot_id.."TSHAKEA:Comd:New:rt"..msg.chat_id_..msg.sender_user_id_,ComdNew)  
 database:sadd(bot_id.."TSHAKEA:Coomds"..msg.chat_id_,ComdNew)  
@@ -4662,15 +3477,6 @@ database:setex(bot_id.."TSHAKEA:Comd:New"..msg.chat_id_..""..msg.sender_user_id_
 send(msg.chat_id_, msg.id_, "🎖┇ارسل نوع الصلاحيه ⚜️\n📊┇(عضو ~ مميز  ~ ادمن  ~ مدير )") 
 end
 if text and text:match("^مسح صلاحيه (.*)$") and Addictive(msg) or text and text:match("^حذف صلاحيه (.*)$") and Addictive(msg) then 
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 ComdNew = text:match("^مسح صلاحيه (.*)$") or text:match("^حذف صلاحيه (.*)$")
 database:del(bot_id.."TSHAKEA:Comd:New:rt:bot:"..ComdNew..msg.chat_id_)
 send(msg.chat_id_, msg.id_, "☑┇تم مسح الصلاحيه ") 
@@ -4837,29 +3643,11 @@ return false
 end  
 end
 if text == "اضف رد" and Owner(msg) then
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 send(msg.chat_id_, msg.id_,"📫┇ارسل الكلمه التري تريد اضافتها")
 database:set(bot_id.."TSHAKEA:Set:Manager:rd"..msg.sender_user_id_..":"..msg.chat_id_,true)
 return false 
 end
 if text == "حذف رد" and Owner(msg) then
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 send(msg.chat_id_, msg.id_,"📫┇ارسل الكلمه التري تريد حذفها")
 database:set(bot_id.."TSHAKEA:Set:Manager:rd"..msg.sender_user_id_..":"..msg.chat_id_,"true2")
 return false 
@@ -5134,15 +3922,6 @@ end
 end
 end
 if text == 'طرد المحذوفين' or text == 'مسح المحذوفين' then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 if Addictive(msg) then    
 tdcli_function({ID = "GetChannelMembers",channel_id_ = msg.chat_id_:gsub("-100",""),offset_ = 0,limit_ = 1000}, function(arg,del)
 for k, v in pairs(del.members_) do
@@ -5170,21 +3949,11 @@ database:del(bot_id.."TSHAKEA:Reply:Sudo"..msg.chat_id_)
 send(msg.chat_id_, msg.id_,"📛┇تم تفعيل ردود المطور" ) 
 end
 if text == "تعطيل ردود المطور" and Owner(msg) then  
-
 database:set(bot_id.."TSHAKEA:Reply:Sudo"..msg.chat_id_,true)   
 send(msg.chat_id_, msg.id_,"📛┇تم تعطيل ردود المطور" ) 
 end
 
 if text == ("تنزيل الكل") and msg.reply_to_message_id_ ~= 0 and Owner(msg) then
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 function Function_TSHAKEA(extra, result, success)
 if tonumber(SUDO) == tonumber(result.sender_user_id_) then
 send(msg.chat_id_, msg.id_,"💢┇ لا تستطيع تنزيل المطور الاساسي")
@@ -5238,15 +4007,6 @@ end
 tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumber(msg.reply_to_message_id_)}, Function_TSHAKEA, nil)
 end
 if text == "تاك للكل" and Addictive(msg) then
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 tdcli_function({ID = "GetChannelMembers",channel_id_ = msg.chat_id_:gsub("-100",""), offset_ = 0,limit_ = 200},function(ta,taha)
 local t = "\n⛔┇ قائمة الاعضاء \n━━━━━━━━━━━━━\n"
 x = 0
@@ -5264,28 +4024,10 @@ end,nil)
 end
 
 if text == "رتبتي" then
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 local rtp = Get_Rank(msg.sender_user_id_,msg.chat_id_)
 send(msg.chat_id_, msg.id_,"💢┇ رتبتك في البوت » "..rtp)
 end
 if text == "اسمي"  then 
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 tdcli_function({ID="GetUser",user_id_=msg.sender_user_id_},function(extra,result,success)
 if result.first_name_  then
 first_name = "🚫┇ اسمك الاول ← {`"..(result.first_name_).."`}"
@@ -5301,15 +4043,6 @@ send(msg.chat_id_, msg.id_,first_name.."\n"..last_name)
 end,nil)
 end 
 if text==("عدد الكروب") and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 if msg.can_be_deleted_ == false then 
 send(msg.chat_id_,msg.id_,"💢┇ البوت ليس ادمن هنا \n") 
 return false  
@@ -5326,15 +4059,6 @@ end,nil)
 end,nil)
 end 
 if text == "اطردني" or text == "طردني" then
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 if not database:get(bot_id.."TSHAKEA:Kick:Me"..msg.chat_id_) then
 if Rank_Checking(msg.sender_user_id_, msg.chat_id_) == true then
 send(msg.chat_id_, msg.id_, "\n💢┇ عذرا لا استطيع طرد ( "..Get_Rank(msg.sender_user_id_,msg.chat_id_).." )")
@@ -5365,43 +4089,16 @@ end
 end
 
 if text == "تفعيل اطردني" and Owner(msg) then   
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 database:del(bot_id.."TSHAKEA:Kick:Me"..msg.chat_id_)  
 send(msg.chat_id_, msg.id_,Text) 
 end
 if text == "تعطيل اطردني" and Owner(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 database:set(bot_id.."TSHAKEA:Kick:Me"..msg.chat_id_,true)  
 Text = "\n📫┇تم تعطيل امر اطردني"
 send(msg.chat_id_, msg.id_,Text) 
 end
 
 if text and text:match("^رفع القيود @(.*)") and Owner(msg) then 
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 local username = text:match("^رفع القيود @(.*)") 
 function Function_TSHAKEA(extra, result, success)
 if result.id_ then
@@ -5426,15 +4123,6 @@ end
 tdcli_function ({ID = "SearchPublicChat",username_ = username}, Function_TSHAKEA, nil)
 end
 if text == "رفع القيود" and Owner(msg) then
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 function Function_TSHAKEA(extra, result, success)
 if DevTSHAKEA(msg) then
 database:srem(bot_id.."TSHAKEA:GBan:User",result.sender_user_id_)
@@ -5454,15 +4142,6 @@ end
 tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumber(msg.reply_to_message_id_)}, Function_TSHAKEA, nil)
 end
 if text and text:match("^كشف القيود @(.*)") and Owner(msg) then 
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 local username = text:match("^كشف القيود @(.*)") 
 function Function_TSHAKEA(extra, result, success)
 if result.id_ then
@@ -5490,15 +4169,6 @@ tdcli_function ({ID = "SearchPublicChat",username_ = username}, Function_TSHAKEA
 end
 
 if text == "كشف القيود" and Owner(msg) then 
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 function Function_TSHAKEA(extra, result, success)
 if database:sismember(bot_id.."TSHAKEA:Muted:User"..msg.chat_id_,result.sender_user_id_) then
 Muted = "مكتوم"
@@ -5522,15 +4192,6 @@ tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumbe
 end
 
 if text and text:match("^ضع اسم (.*)") and Owner(msg) or text and text:match("^وضع اسم (.*)") and Owner(msg) then 
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 local Name = text:match("^ضع اسم (.*)") or text:match("^وضع اسم (.*)") 
 tdcli_function ({ ID = "ChangeChatTitle",chat_id_ = msg.chat_id_,title_ = Name },function(arg,data) 
 if data.message_ == "Channel chat title can be changed by administrators only" then
@@ -5546,15 +4207,6 @@ end,nil)
 end
 
 if text ==("رفع الادمنيه") and Owner(msg) then
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 tdcli_function ({ID = "GetChannelMembers",channel_id_ = msg.chat_id_:gsub("-100",""),filter_ = {ID = "ChannelMembersAdministrators"},offset_ = 0,limit_ = 100},function(arg,data) 
 local num2 = 0
 local admins = data.members_
@@ -5591,7 +4243,7 @@ if b.first_name_ == false then
 send(msg.chat_id_, msg.id_,"🔘┇ حساب المنشئ محذوف")
 return false  
 end
-local UserName = (b.username_ or "TSHAKEATEAM")
+local UserName = (b.username_ or "Za_ZX")
 send(msg.chat_id_, msg.id_,"🚸┇منشئ المجموعه ~ ["..b.first_name_.."](T.me/"..UserName..")")  
 end,nil)   
 end
@@ -5611,7 +4263,7 @@ if b.first_name_ == false then
 send(msg.chat_id_, msg.id_,"📬┇حساب المنشئ محذوف")
 return false  
 end
-local UserName = (b.username_ or "TSHAKEATEAM")
+local UserName = (b.username_ or "Za_ZX")
 send(msg.chat_id_, msg.id_,"🚸┇تم ترقية منشئ المجموعه ~ ["..b.first_name_.."](T.me/"..UserName..")")  
 database:sadd(bot_id.."TSHAKEA:Basic:Constructor"..msg.chat_id_,b.id_)
 end,nil)   
@@ -5646,17 +4298,8 @@ database:set(bot_id.."TSHAKEA:Left:Bot"..msg.chat_id_,true)
 send(msg.chat_id_, msg.id_, "📫┇تم تعطيل مغادرة البوت") 
 return false 
 end
-if text == (database:get(bot_id.."TSHAKEA:Name:Bot") or "تشاكي") then
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
-Namebot = (database:get(bot_id.."TSHAKEA:Name:Bot") or "تشاكي")
+if text == (database:get(bot_id.."TSHAKEA:Name:Bot") or "TSHAKEA") then
+Namebot = (database:get(bot_id.."TSHAKEA:Name:Bot") or "TSHAKEA")
 local namebot = {
 "عمري فداك "..Namebot.. " كول حب ",
 "كول حبيبي ؟ اني "..Namebot,
@@ -5675,7 +4318,7 @@ return false
 end
 
 if text == "بوت" then
-Namebot = (database:get(bot_id.."TSHAKEA:Name:Bot") or "تشاكي")
+Namebot = (database:get(bot_id.."TSHAKEA:Name:Bot") or "TSHAKEA")
 send(msg.chat_id_, msg.id_,"اسمي القميل ["..Namebot.."] ") 
 end
 if text == "تغير اسم البوت" or text == "تغيير اسم البوت" then 
@@ -6087,94 +4730,31 @@ local text =
 send(msg.chat_id_, msg.id_,text)     
 end    
 if text == "تعطيل اوامر التحشيش" and Owner(msg) then    
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 send(msg.chat_id_, msg.id_, '☑┇تم تعطيل اوامر التحشيش')
 database:set(bot_id.."TSHAKEA:Fun_Bots"..msg.chat_id_,"true")
 end
 if text == "تفعيل اوامر التحشيش" and Owner(msg) then    
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 send(msg.chat_id_, msg.id_,'☑┇تم تفعيل اوامر التحشيش')
 database:del(bot_id.."TSHAKEA:Fun_Bots"..msg.chat_id_)
 end
 
-if text == 'تفعيل الايدي' and Owner(msg) then 
-  if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == 'تفعيل الايدي' and Owner(msg) then   
 database:del(bot_id..'TSHAKEA:Lock:ID:Bot'..msg.chat_id_) 
 send(msg.chat_id_, msg.id_,'☑┇تم تفعيل الايدي') 
 end
 if text == 'تعطيل الايدي' and Owner(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 database:set(bot_id..'TSHAKEA:Lock:ID:Bot'..msg.chat_id_,true) 
 send(msg.chat_id_, msg.id_,'☑┇تم تعطيل الايدي') 
 end
 if text == 'تفعيل الايدي بالصوره' and Owner(msg) then   
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 database:del(bot_id..'TSHAKEA:Lock:ID:Bot:Photo'..msg.chat_id_) 
 send(msg.chat_id_, msg.id_,'☑┇تم تفعيل الايدي بالصوره') 
 end
 if text == 'تعطيل الايدي بالصوره' and Owner(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 database:set(bot_id..'TSHAKEA:Lock:ID:Bot:Photo'..msg.chat_id_,true) 
 send(msg.chat_id_, msg.id_,'☑┇تم تعطيل الايدي بالصوره') 
 end
 if text == 'تعين الايدي' and Owner(msg) then
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
 database:setex(bot_id.."TSHAKEA:Set:Id:Gp"..msg.chat_id_..""..msg.sender_user_id_,240,true)  
 local Text= [[
 ☑┇ ارسل الان النص
@@ -6212,16 +4792,7 @@ database:set(bot_id.."TSHAKEA:Klesh:Id:Bot"..msg.chat_id_,text:match("(.*)"))
 send(msg.chat_id_, msg.id_,'📌┇تم تعين الايدي')    
 end
 
-if text == 'ايدي' and tonumber(msg.reply_to_message_id_) == 0 and not database:get(bot_id..'BESSO:Lock:ID:Bot'..msg.chat_id_) then
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == 'ايدي' and tonumber(msg.reply_to_message_id_) == 0 and not database:get(bot_id..'TSHAKEA:Lock:ID:Bot'..msg.chat_id_) then
 if not database:sismember(bot_id..'TSHAKEA:Spam:Group'..msg.sender_user_id_,text) then
 database:sadd(bot_id.."TSHAKEA:Spam:Group"..msg.sender_user_id_,text) 
 tdcli_function ({ID = "GetUserProfilePhotos",user_id_ = msg.sender_user_id_,offset_ = 0,limit_ = 1},function(extra,taha,success) 
@@ -6356,16 +4927,7 @@ end
 tdcli_function ({ID = "SearchPublicChat",username_ = username}, Function_TSHAKEA, nil)
 return false
 end
-if text == "سمايلات" or text == "سمايل" then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "سمايلات" or text == "سمايل" then
 if database:get(bot_id.."Tshak:Lock:Games"..msg.chat_id_) then
 database:del(bot_id.."Tshak:Set:Sma"..msg.chat_id_)
 Random = {"🍏","🍎","🍐","🍊","🍋","🍉","🍇","🍓","🍈","🍒","🍑","🍍","🥥","🥝","🍅","🍆","🥑","🥦","🥒","🌶","🌽","🥕","🥔","🥖","🥐","🍞","🥨","🍟","🧀","🥚","🍳","🥓","🥩","🍗","🍖","🌭","🍔","🍠","🍕","🥪","🥙","☕️","🍵","🥤","🍶","🍺","🍻","🏀","⚽️","🏈","⚾️","🎾","🏐","🏉","🎱","🏓","🏸","🥅","🎰","🎮","🎳","🎯","🎲","🎻","🎸","🎺","🥁","🎹","🎼","🎧","🎤","🎬","🎨","🎭","🎪","🎟","🎫","🎗","🏵","🎖","🏆","🥌","🛷","🚗","🚌","🏎","🚓","🚑","🚚","🚛","🚜","🇮🇶","⚔","🛡","🔮","🌡","💣","📌","📍","📓","📗","📂","📅","📪","📫","📬","📭","⏰","📺","🎚","☎️","📡"}
@@ -6441,16 +5003,7 @@ end
 database:set(bot_id.."Tshak:Speed:Tr"..msg.chat_id_,true)
 end 
 
-if text == "حزوره" then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "حزوره" then
 if database:get(bot_id.."Tshak:Lock:Games"..msg.chat_id_) then
 database:del(bot_id.."Tshak:Set:Hzora"..msg.chat_id_)
 Hzora = {"الجرس","عقرب الساعه","السمك","المطر","5","الكتاب","البسمار","7","الكعبه","بيت الشعر","لهانه","انا","امي","الابره","الساعه","22","غلط","كم الساعه","البيتنجان","البيض","المرايه","الضوء","الهواء","الضل","العمر","القلم","المشط","الحفره","البحر","الثلج","الاسفنج","الصوت","بلم"};
@@ -6501,16 +5054,7 @@ end
 database:set(bot_id.."Tshak:Set:Hzora"..msg.chat_id_,true)
 end 
 
-if text == "معاني" then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "معاني" then
 if database:get(bot_id.."Tshak:Lock:Games"..msg.chat_id_) then
 database:del(bot_id.."Tshak:Set:Maany"..msg.chat_id_)
 Maany_Rand = {"قرد","دجاجه","بطريق","ضفدع","بومه","نحله","ديك","جمل","بقره","دولفين","تمساح","قرش","نمر","اخطبوط","سمكه","خفاش","اسد","فأر","ذئب","فراشه","عقرب","زرافه","قنفذ","تفاحه","باذنجان"}
@@ -6552,16 +5096,7 @@ database:incrby(bot_id.."Tshak:Add:Num"..msg.chat_id_..msg.sender_user_id_, 1)
 end
 database:set(bot_id.."Tshak:Set:Maany"..msg.chat_id_,true)
 end 
-if text == "العكس" then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "العكس" then
 if database:get(bot_id.."Tshak:Lock:Games"..msg.chat_id_) then
 database:del(bot_id.."Tshak:Set:Aks"..msg.chat_id_)
 katu = {"باي","فهمت","موزين","اسمعك","احبك","موحلو","نضيف","حاره","ناصي","جوه","سريع","ونسه","طويل","سمين","ضعيف","شريف","شجاع","رحت","عدل","نشيط","شبعان","موعطشان","خوش ولد","اني","هادئ"}
@@ -6628,16 +5163,7 @@ end
 end
 end
 end
-if text == "خمن" or text == "تخمين" then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end   
+if text == "خمن" or text == "تخمين" then   
 if database:get(bot_id.."Tshak:Lock:Games"..msg.chat_id_) then
 Num = math.random(1,20)
 database:set(bot_id.."Tshak:GAMES:NUM"..msg.chat_id_,Num) 
@@ -6665,16 +5191,7 @@ end
 end
 end
 
-if text == "محيبس" or text == "بات" then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "محيبس" or text == "بات" then
 if database:get(bot_id.."Tshak:Lock:Games"..msg.chat_id_) then   
 Num = math.random(1,6)
 database:set(bot_id.."Tshak:Games:Bat"..msg.chat_id_,Num) 
@@ -6691,16 +5208,7 @@ return false
 end
 end
 
-if text == "المختلف" then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "المختلف" then
 if database:get(bot_id.."Tshak:Lock:Games"..msg.chat_id_) then
 mktlf = {"😸","☠","🐼","🐇","🌑","🌚","⭐️","✨","⛈","🌥","⛄️","👨‍🔬","👨‍💻","👨‍🔧","🧚‍♀","🧜‍♂","🧝‍♂","🙍‍♂","🧖‍♂","👬","🕒","🕤","⌛️","📅",};
 name = mktlf[math.random(#mktlf)]
@@ -6744,16 +5252,7 @@ database:incrby(bot_id.."Tshak:Add:Num"..msg.chat_id_..msg.sender_user_id_, 1)
 end
 database:set(bot_id.."Tshak:Set:Moktlf:Bot"..msg.chat_id_,true)
 end
-if text == "امثله" then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == "امثله" then
 if database:get(bot_id.."Tshak:Lock:Games"..msg.chat_id_) then
 mthal = {"جوز","ضراطه","الحبل","الحافي","شقره","بيدك","سلايه","النخله","الخيل","حداد","المبلل","يركص","قرد","العنب","العمه","الخبز","بالحصاد","شهر","شكه","يكحله",};
 name = mthal[math.random(#mthal)]
@@ -6791,42 +5290,15 @@ database:incrby(bot_id.."Tshak:Add:Num"..msg.chat_id_..msg.sender_user_id_, 1)
 end
 database:set(bot_id.."Tshak:Set:Amth:Bot"..msg.chat_id_,true)
 end
-if text == "تعطيل الالعاب" and Owner(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end   
+if text == "تعطيل الالعاب" and Owner(msg) then   
 database:del(bot_id.."Tshak:Lock:Games"..msg.chat_id_) 
 send(msg.chat_id_, msg.id_,"\n☑┇تم تعطيل الالعاب") 
 end
 if text == "تفعيل الالعاب" and Owner(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end  
 database:set(bot_id.."Tshak:Lock:Games"..msg.chat_id_,true) 
 send(msg.chat_id_, msg.id_,"\n☑┇تم تفعيل الالعاب") 
 end
-if text == 'الالعاب' then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == 'الالعاب' then
 Teext = [[
 📛┇قائمه الالعاب الموجوده
 ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ 
@@ -6845,71 +5317,38 @@ Teext = [[
 ]]
 send(msg.chat_id_, msg.id_,Teext) 
 end
-if text == 'رسائلي' then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == 'رسائلي' then
 local nummsg = database:get(bot_id..'TSHAKEA:messageUser'..msg.chat_id_..':'..msg.sender_user_id_) or 1
 local Text = '📨┇عدد رسائلك هنا *~ '..nummsg..'*'
 send(msg.chat_id_, msg.id_,Text) 
 end
 if text == 'مسح رسائلي' then
+database:del(bot_id..'TSHAKEA:messageUser'..msg.chat_id_..':'..msg.sender_user_id_)
 local Text = '☑┇تم مسح جميع رسائلك '
 send(msg.chat_id_, msg.id_,Text) 
 end
-if text == 'سحكاتي' or text == 'تعديلاتي' then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == 'سحكاتي' or text == 'تعديلاتي' then
 local edit = database:get(bot_id..'TSHAKEA:message_edit'..msg.chat_id_..msg.sender_user_id_) or 0
 local Text = '✏┇عدد التعديلات هنا *~ '..edit..'*'
 send(msg.chat_id_, msg.id_,Text) 
 end
 if text == 'مسح سحكاتي' or text == 'مسح تعديلاتي' then
+database:del(bot_id..'TSHAKEA:message_edit'..msg.chat_id_..':'..msg.sender_user_id_)
 local Text = '☑┇تم مسح جميع تعديلاتك '
 send(msg.chat_id_, msg.id_,Text) 
 end
-if text == 'جهاتي' then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == 'جهاتي' then
 local addmem = database:get(bot_id.."TSHAKEA:Add:Memp"..msg.chat_id_..":"..msg.sender_user_id_) or 0
 local Text = '👥┇عدد جهاتك المضافه هنا *~ '..addmem..'*'
 send(msg.chat_id_, msg.id_,Text) 
 end
 if text == 'مسح جهاتي' then
+database:del(bot_id..'TSHAKEA:Add:Memp'..msg.chat_id_..':'..msg.sender_user_id_)
 local Text = '☑┇تم مسح جميع جهاتك المضافه '
 send(msg.chat_id_, msg.id_,Text) 
 end
 
-if text == "مجوهراتي" then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end 
+if text == "مجوهراتي" then 
 local Num = database:get(bot_id.."Tshak:Add:Num"..msg.chat_id_..msg.sender_user_id_) or 0
 if Num == 0 then 
 Text = "📫┇لم تلعب اي لعبه للحصول على جواهر"
@@ -6918,16 +5357,7 @@ Text = "📮┇عدد جواهر التي رحبتها هي *~ { "..Num.." } م�
 end
 send(msg.chat_id_, msg.id_,Text) 
 end
-if text and text:match("^بيع مجوهراتي (%d+)$") then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^بيع مجوهراتي (%d+)$") then
 local NUMPY = text:match("^بيع مجوهراتي (%d+)$") 
 if tonumber(NUMPY) == tonumber(0) then
 send(msg.chat_id_,msg.id_,"\n*📮┇لا استطيع البيع اقل من 1 *") 
@@ -6979,16 +5409,7 @@ database:incrby(bot_id.."Tshak:Add:Num"..msg.chat_id_..iduserr,numadded)
 send(msg.chat_id_, msg.id_,"☑┇تم اضافة له {"..numadded.."} من المجوهرات")  
 end
 ------------------------------------------------------------
-if text and text:match("^اضف رسائل (%d+)$") and msg.reply_to_message_id_ == 0 and Constructor(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end    
+if text and text:match("^اضف رسائل (%d+)$") and msg.reply_to_message_id_ == 0 and Constructor(msg) then    
 taha = text:match("^اضف رسائل (%d+)$")
 database:set(bot_id.."Tshak:id:user"..msg.chat_id_,taha)  
 database:setex(bot_id.."Tshak:numadd:user" .. msg.chat_id_ .. "" .. msg.sender_user_id_, 120, true)  
@@ -6996,31 +5417,13 @@ send(msg.chat_id_, msg.id_, "✉┇ارسل لي عدد الرسائل الان"
 return false
 end
 if text and text:match("^اضف مجوهرات (%d+)$") and msg.reply_to_message_id_ == 0 and Constructor(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end  
 taha = text:match("^اضف مجوهرات (%d+)$")
 database:set(bot_id.."Tshak:idgem:user"..msg.chat_id_,taha)  
 database:setex(bot_id.."Tshak:gemadd:user" .. msg.chat_id_ .. "" .. msg.sender_user_id_, 120, true)  
 send(msg.chat_id_, msg.id_, "💠┇ارسل لي عدد المجوهرات الان") 
 return false
 end
-if text and text:match("^اضف مجوهرات (%d+)$") and msg.reply_to_message_id_ ~= 0 and Constructor(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text and text:match("^اضف مجوهرات (%d+)$") and msg.reply_to_message_id_ ~= 0 and Constructor(msg) then
 local Num = text:match("^اضف مجوهرات (%d+)$")
 function reply(extra, result, success)
 database:incrby(bot_id.."Tshak:Add:Num"..msg.chat_id_..result.sender_user_id_,Num)  
@@ -7115,13 +5518,13 @@ end,nil)
 end
 return false
 end
-text == ("تحديث السورس") and DevBarbie(msg) then  
+if text == ("تحديث السورس") and DevTSHAKEA(msg) then  
 send(msg.chat_id_,msg.id_,'☑┇تم التحديث')
-os.execute('rm -rf TSHAKEAA.lua')
+os.execute('rm -rf TSHAKEA.lua')
 os.execute('rm -rf Run.lua')
-download_to_file('https://raw.githubusercontent.com/TSHAKEAAD/TSHAKEAA/master/Barbie.lua', 'TSHAKEAA.lua') 
-download_to_file('https://raw.githubusercontent.com/TSHAKEAAD/TSHAKEAA/master/Run.lua', 'Run.lua') 
-dofile('Barbie.lua')  
+download_to_file('https://raw.githubusercontent.com/TSHAKEAD/TSHAKEA/master/TSHAKEA.lua', 'TSHAKEA.lua') 
+download_to_file('https://raw.githubusercontent.com/TSHAKEAD/TSHAKEA/master/Run.lua', 'Run.lua') 
+dofile('TSHAKEA.lua')  
 return false
 end
 
@@ -7235,12 +5638,12 @@ send(msg.chat_id_, msg.id_,t)
 end
 if text == "متجر الملفات" or text == 'المتجر' then
 if DevTSHAKEA(msg) then
-local Get_Files, res = https.request("https://raw.githubusercontent.com/TSHAKEAabas/files_TSHAKEA/master/getfile.json")
+local Get_Files, res = https.request("https://raw.githubusercontent.com/TSHAKEAbo/FILE_TSHAKEA/master/getfile.json")
 if res == 200 then
 local Get_info, res = pcall(JSON.decode,Get_Files);
 vardump(res.plugins_)
 if Get_info then
-local TextS = "\n📂┇اهلا بك في متجر ملفات تشاكي \n📮┇الملفات الموجوده حاليا \nꔹ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ꔹ\n\n"
+local TextS = "\n📂┇اهلا بك في متجر ملفات TSHAKEA \n📮┇الملفات الموجوده حاليا \nꔹ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ꔹ\n\n"
 local TextE = "\nꔹ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ꔹ\n📌┇تدل علامة (✔) الملف مفعل\n".."📌┇تدل علامة (✖) الملف معطل\n"
 local NumFile = 0
 for name,Info in pairs(res.plugins_) do
@@ -7263,47 +5666,6 @@ return false
 end
 end
 
-if text and text:match("^تغير الاشتراك$") and DevTSHAKEA(msg) then
-database:setex(bot_id.."add:ch:jm" .. msg.chat_id_ .. "" .. msg.sender_user_id_, 360, true)  
-send(msg.chat_id_, msg.id_, '📮| حسنآ ارسل لي معرف القناة') 
-return false  
-end
-if text and text:match("^تغير رساله الاشتراك$") and DevTSHAKEA(msg) then  
-database:setex(bot_id.."textch:user" .. msg.chat_id_ .. "" .. msg.sender_user_id_, 360, true)  
-send(msg.chat_id_, msg.id_, '📮| حسنآ ارسل لي النص الذي تريده') 
-return false  
-end
-if text == "حذف رساله الاشتراك" and DevTSHAKEA(msg) then  
-database:del(bot_id..'text:ch:user')
-send(msg.chat_id_, msg.id_, "📮| تم مسح رساله الاشتراك ") 
-return false  
-end
-if text == "تفعيل الاشتراك الاجباري" and DevTSHAKEA(msg) then  
-if database:get(bot_id..'add:ch:id') then
-local addchusername = database:get(bot_id..'add:ch:username')
-send(msg.chat_id_, msg.id_,"📮| الاشتراك الاجباري مفعل \n📮| على القناة » ["..addchusername.."]") 
-else
-database:setex(bot_id.."add:ch:jm" .. msg.chat_id_ .. "" .. msg.sender_user_id_, 360, true)  
-send(msg.chat_id_, msg.id_,"📮| اهلا عزيزي المطور \n📮| ارسل معرف قناتك ليتم تفعيل الاشتراك الاجباري") 
-end
-return false  
-end
-if text == "تعطيل الاشتراك الاجباري"  and DevTSHAKEA(msg) then  
-database:del(bot_id..'add:ch:id')
-database:del(bot_id..'add:ch:username')
-send(msg.chat_id_, msg.id_, "📮| تم تعطيل الاشتراك الاجباري ") 
-return false  
-end
-if text == "الاشتراك الاجباري" and DevTSHAKEA(msg) then  
-if database:get(bot_id..'add:ch:username') then
-local addchusername = database:get(bot_id..'add:ch:username')
-send(msg.chat_id_, msg.id_, "📮| تم تفعيل الاشتراك الاجباري \n📮| على القناة » ["..addchusername.."]") 
-else
-send(msg.chat_id_, msg.id_, "📮| لا يوجد قناة في الاشتراك الاجباري ") 
-end
-return false  
-end
-
 if text and text:match("^(تعطيل ملف) (.*)(.lua)$") and DevTSHAKEA(msg) then
 local name_t = {string.match(text, "^(تعطيل ملف) (.*)(.lua)$")}
 local file = name_t[2]..'.lua'
@@ -7314,7 +5676,7 @@ t = "*🗂┇ الملف » {"..file.."}\n📬┇ تم تعطيله وحذفه �
 else
 t = "*📬┇ بالتاكيد تم تعطيل وحذف ملف » {"..file.."} \n✓*"
 end
-local json_file, res = https.request("https://raw.githubusercontent.com/TSHAKEAabas/files_TSHAKEA/master/files_TSHAKEA/"..file)
+local json_file, res = https.request("https://raw.githubusercontent.com/TSHAKEAbo/FILE_TSHAKEA/master/FILE_TSHAKEA/"..file)
 if res == 200 then
 os.execute("rm -fr TSHAKEA_Files/"..file)
 send(msg.chat_id_, msg.id_,t) 
@@ -7334,7 +5696,7 @@ t = "*📬┇ بالتاكيد تم تنزيل وتفعيل ملف » {"..file..
 else
 t = "*🗂┇ الملف » {"..file.."}\n📬┇ تم تنزيله وتفعيله بنجاح \n💥*"
 end
-local json_file, res = https.request("https://raw.githubusercontent.com/TSHAKEAabas/files_TSHAKEA/master/files_TSHAKEA/"..file)
+local json_file, res = https.request("https://raw.githubusercontent.com/TSHAKEAbo/FILE_TSHAKEA/master/FILE_TSHAKEA/"..file)
 if res == 200 then
 local chek = io.open("TSHAKEA_Files/"..file,'w+')
 chek:write(json_file)
@@ -7356,6 +5718,27 @@ local Users = database:smembers('TSHAKEA:'..bot_id.."userss")
 local Groups = database:smembers('TSHAKEA:'..bot_id..'groups') 
 for i = 1, #Groups do
 database:sadd(bot_id..'TSHAKEA:Chek:Groups',Groups[i])  
+local list1 = database:smembers('TSHAKEA:'..bot_id..'creatorbasic:'..Groups[i])
+for k,v in pairs(list1) do
+database:sadd(bot_id.."TSHAKEA:Basic:Constructor"..Groups[i], v)
+end
+local list2 = database:smembers('TSHAKEA:'..bot_id..'creator:'..Groups[i])
+for k,v in pairs(list2) do
+database:sadd(bot_id.."TSHAKEA:Constructor"..Groups[i], v)
+end
+local list3 = database:smembers('TSHAKEA:'..bot_id..'owners:'..Groups[i])
+for k,v in pairs(list3) do
+database:sadd(bot_id.."TSHAKEA:Manager"..Groups[i], v)
+end
+local list4 = database:smembers('TSHAKEA:'..bot_id..'mods:'..Groups[i])
+for k,v in pairs(list4) do
+database:sadd(bot_id.."TSHAKEA:Mod:User"..Groups[i], v)
+end
+database:set(bot_id.."TSHAKEA:Lock:tagservrbot"..Groups[i],true)   
+list ={"Lock:Bot:kick","Lock:User:Name","Lock:hashtak","Lock:Cmd","Lock:Link","Lock:forward","Lock:Keyboard","Lock:geam","Lock:Photo","Lock:Animation","Lock:Video","Lock:Audio","Lock:vico","Lock:Sticker","Lock:Document","Lock:Unsupported","Lock:Markdaun","Lock:Contact","Lock:Spam"}
+for i,lock in pairs(list) do 
+database:set(bot_id..'TSHAKEA:'..lock..Groups[i],"del")    
+end
 end
 for i = 1, #Users do
 database:sadd(bot_id..'TSHAKEA:UsersBot',Users[i])  
@@ -7367,18 +5750,18 @@ database:del(bot_id..'TSHAKEA:Text_Dev')
 send(msg.chat_id_, msg.id_,'☑┇ تم حذف كليشه المطور')
 end
 if text == 'وضع كليشه المطور' and DevTSHAKEA(msg) then
-database:set(bot_id..'TSHAKEA:Set:Text_Dev'..msg.chat_id_,true)
+database:set(bot_id..'TSHAKEA:Set:Text_Dev'..msg.chat_id_..':'..msg.sender_user_id_,true)
 send(msg.chat_id_,msg.id_,'📫┇ ارسل الكليشه الان')
 return false
 end
-if text and database:get(bot_id..'TSHAKEA:Set:Text_Dev'..msg.chat_id_) then
+if text and database:get(bot_id..'TSHAKEA:Set:Text_Dev'..msg.chat_id_..':'..msg.sender_user_id_) then
 if text == 'الغاء' then 
-database:del(bot_id..'TSHAKEA:Set:Text_Dev'..msg.chat_id_)
+database:del(bot_id..'TSHAKEA:Set:Text_Dev'..msg.chat_id_..':'..msg.sender_user_id_)
 send(msg.chat_id_,msg.id_,'🔖┇تم الغاء حفظ كليشة المطور')
 return false
 end
 database:set(bot_id..'TSHAKEA:Text_Dev',text)
-database:del(bot_id..'TSHAKEA:Set:Text_Dev'..msg.chat_id_)
+database:del(bot_id..'TSHAKEA:Set:Text_Dev'..msg.chat_id_..':'..msg.sender_user_id_)
 send(msg.chat_id_,msg.id_,'🔰┇تم حفظ كليشة المطور')
 return false
 end
@@ -7398,71 +5781,44 @@ if text == "تحديث" and DevTSHAKEA(msg) then
 dofile("TSHAKEA.lua")  
 send(msg.chat_id_, msg.id_, "☑┇تم التحديث")
 end
-if text == 'السورس' or text == 'سورس' or text == 'ياسورس' or text == 'يا سورس' then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == 'السورس' or text == 'سورس' or text == 'ياسورس' or text == 'يا سورس' then
 Text = [[
-⚜ Welcome to Source ⚜
+🔰 Welcome to Source 🔰
 
-🔰┇LiRfeN TEAM 
+🌐┇TSHAKEA TEAM 
 ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉
-⛓┇ [Source Channel](https://t.me/hh4hhhh)
+📊┇ [Source Channel](https://t.me/Za_ZX)
 
-⛓┇ [LiRfeN DeV](https://t.me/GGGGNG)
+📁┇ [Source  Files](https://t.me/TSHAKEA_info)
 
-⛓┇ [Source  Files](https://t.me/hh4hhhh)
+🌐┇ [TSHAKEA iNDT](https://t.me/Za_ZX/4611)
  
  ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ 
-🇺🇸┇ [TwS LiRfeN](https://t.me/DZSBOT)
+📧┇ [TWS TSHAKEA](https://t.me/A_5bot)
 ]]
 send(msg.chat_id_, msg.id_,Text)
 end
-if text == 'الاوامر' and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == 'الاوامر' and Addictive(msg) then
 Text = [[
-⚜┇هناك {5} اوامر لعرضها
+📮┇هناك {5} اوامر لعرضها
 ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉
-🖇┇م1 -› لعرض اوامر الحمايه
-🖇┇م2 -› لعرض اوامر الادمنيه
-🖇┇م3 -› لعرض اوامر المدراء
-🖇┇م4 -› لعرض اوامر المنشئين
-🖇┇م5 -› لعرض اوامر المطورين
+🗑┇م1 ~⪼ لعرض اوامر الحمايه
+📚┇م2 ~⪼ لعرض اوامر الادمنيه
+🗓┇م3 ~⪼ لعرض اوامر المدراء
+🎖┇م4 ~⪼ لعرض اوامر المنشئين
+👤┇م5 ~⪼ لعرض اوامر المطورين
 ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉
-🇺🇸┇CH [@S_SSS7] 
+📡┇CH @Za_ZX
 ]]
 send(msg.chat_id_, msg.id_,Text)
 return false
 end
-if text == 'م1' and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == 'م1' and Addictive(msg) then
 Text = [[
-🔰┇ اوامر حمايه المجموعه
+📮┇ اوامر حمايه المجموعه
 ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉
-🔘┇قفل/فتح + الاوامر الادناه 
-🔘┇قفل/فتح + الامر بالتقيد • بالطرد • بالكتم
+⏺┇قفل/فتح + الاوامر الادناه 
+⏺┇قفل/فتح + الامر بالتقيد • بالطرد • بالكتم
 ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉
 🔐┇الروابط
 🔐┇المعرف
@@ -7471,44 +5827,35 @@ Text = [[
 🔐┇التعديل
 🔐┇التثبيت
 🔐┇المتحركه
-📁┇الملفات
-📁┇الصور
+🔐┇الملفات
+🔐┇الصور
 
-📭┇الملصقات
-📭┇الفيديو
-📭┇الانلاين
-📭┇الدردشه
-📭┇التوجيه
-📭┇الاغاني
-📭┇الصوت
-📭┇الجهات
-📭┇الاشعارات
+🔐┇الملصقات
+🔐┇الفيديو
+🔐┇الانلاين
+🔐┇الدردشه
+🔐┇التوجيه
+🔐┇الاغاني
+🔐┇الصوت
+🔐┇الجهات
+🔐┇الاشعارات
 
-📮┇الماركداون
-📮┇البوتات
-📮┇التكرار
-📮┇الكلايش
-📮┇السيلفي
+🔐┇الماركداون
+🔐┇البوتات
+🔐┇التكرار
+🔐┇الكلايش
+🔐┇السيلفي
 ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉
-🇺🇸┇Ch [@S_SSS7] 
+📡┇Ch ~⪼ @Za_ZX
 ]]
 send(msg.chat_id_, msg.id_,Text)
 return false
 end
-if text == 'م2' and Addictive(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == 'م2' and Addictive(msg) then
 Text = [[
-🔰┇اوامر الادمنيه
+🥈┇اوامر الادمنيه
 ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉
-📊┇رفع/تنزيل مميز
+▶️┇رفع/تنزيل مميز
 📮┇تاك للكل
 📮┇عدد الكروب
 🚫┇كتم
@@ -7516,32 +5863,32 @@ Text = [[
 🚷┇طرد
 🚫┇منع
 🚫┇تقيد
-🖇┇الغاء حظر
-🖇┇الغاء كتم
-🖇┇الغاء تقيد
-🖇┇الغاء منع
-📙┇المحظورين
-📙┇المكتومين
-📙┇المميزين
-📙┇الصلاحيات
-📙┇قائمه المنع
+⏺┇الغاء حظر
+⏺┇الغاء كتم
+⏺┇الغاء تقيد
+⏺┇الغاء منع
+📋┇المحظورين
+📋┇المكتومين
+📋┇المميزين
+📋┇الصلاحيات
+📋┇قائمه المنع
 
 〽┇تثبيت
-🔘┇الغاء تثبيت
-👁‍🗨┇الاعدادات
+⏺┇الغاء تثبيت
+📄┇الاعدادات
 
 🗳┇الرابط
 📃┇القوانين
 
 👋🏻┇الترحيب
 👋🏻┇تفعيل/تعطيل الترحيب
-🖇┇اضف /مسح صلاحيه 
-🖇┇وضع تكرار + العدد
-📋┇ايدي
-📋┇جهاتي
-📋┇سحكاتي
-📋┇رسائلي
-📋┇كشف البوتات
+⚠️┇اضف /مسح صلاحيه 
+⚠️┇وضع تكرار + العدد
+💭┇ايدي
+💭┇جهاتي
+💭┇سحكاتي
+💭┇رسائلي
+💭┇كشف البوتات
 ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉
 🔘┇وضع + الاوامر الادناه
 ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉
@@ -7565,40 +5912,31 @@ Text = [[
 📮┇الصلاحيات
 📮┇الرابط
 ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉
-🇺🇸┇CH [@S_SSS7] 
+📡┇CH @Za_ZX
 ]]
 send(msg.chat_id_, msg.id_,Text)
 return false
 end
-if text == 'م3' and Owner(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == 'م3' and Owner(msg) then
 Text = [[
-🔰┇ اوامر المدراء
+🥇┇ اوامر المدراء
 ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉
 ↕️┇رفع/تنزيل ادمن
 ↕️┇رفع/كشف القيود
 ↕️┇تنزيل الكل
 
-🗳┇تفعيل/تعطيل الايدي بالصوره
-🗳┇تفعيل/تعطيل الايدي
-🗳┇تفعيل/تعطيل ردود المطور
-🗳┇تفعيل/تعطيل اللعبه/الالعاب
-🗳┇تفعيل/تعطيل ردود المدير
-🗳┇تفعيل/تعطيل اطردني
-🗳┇تفعيل/تعطيل الرفع
-🗳┇تفعيل/تعطيل الحظر/الطرد
-🗳┇تفعيل/تعطيل الرابط/جلب الرابط
-🗳┇تفعيل/تعطيل اوامر التحشيش
+💬┇تفعيل/تعطيل الايدي بالصوره
+💬┇تفعيل/تعطيل الايدي
+💬┇تفعيل/تعطيل ردود المطور
+💬┇تفعيل/تعطيل اللعبه/الالعاب
+💬┇تفعيل/تعطيل ردود المدير
+💬┇تفعيل/تعطيل اطردني
+💬┇تفعيل/تعطيل الرفع
+💬┇تفعيل/تعطيل الحظر/الطرد
+💬┇تفعيل/تعطيل الرابط/جلب الرابط
+💬┇تفعيل/تعطيل اوامر التحشيش
 
-🔘┇تعين/مسح الايدي
+♨️┇تعين/مسح الايدي
 
 🖇┇رفع الادمنيه
 🖇┇اضف/حذف رد
@@ -7609,68 +5947,59 @@ Text = [[
 🗑┇مسح الادمنيه
 🗑┇مسح ردود المدير
 ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉
-☑️┇لتغير ردود الايدي 
-☑️┇تغير رد المطور + النص
-☑️┇تغير رد المنشئ الاساسي + النص
-☑️┇تغير رد المنشئ + النص
-☑️┇تغير رد المدير + النص
-☑️┇تغير رد الادمن + النص
-☑️┇تغير رد المميز + النص
-☑️┇تغير رد العضو + النص
+🔘┇لتغير ردود الايدي :- 
+تغير رد المطور + النص
+تغير رد المنشئ الاساسي + النص
+تغير رد المنشئ + النص
+تغير رد المدير + النص
+تغير رد الادمن + النص
+تغير رد المميز + النص
+تغير رد العضو + النص
 ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉
-🇺🇸┇CH [@S_SSS7] 
+📡┇CH @Za_ZX
 ]]
 send(msg.chat_id_, msg.id_,Text)
 return false
 end
-if text == 'م4' and Constructor(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == 'م4' and Constructor(msg) then
 Text = [[
-🔰┇اوامر المنشئين الاساسين 
+🏅┇اوامر المنشئين الاساسين 
 ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉
 ↕️┇رفع/تنزيل منشئ
 ↕️┇المنشئين
 🗑┇مسح المنشئين
 
-🔰┇اوامر المنشئين
+🏅┇اوامر المنشئين
 ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉
-➕┇رفع/تنزيل مدير
-➕┇المدراء
-➕┇مسح المدراء
-➕┇تعين/مسح الايدي
+↕️┇رفع/تنزيل مدير
+↕️┇المدراء
+🗑┇مسح المدراء
+🔘┇تعين/مسح الايدي
 ➕┇اضف/حذف امر
 ➕┇الاوامر المضافه
 ➕┇حذف/مسح الاوامر المضافه
 ➕┇اضف رسائل + العدد بالرد
 ➕┇اضف مجوهرات + العدد بالرد
 ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉
-🇺🇸┇CH [@S_SSS7] 
+📡┇CH @Za_ZX
 ]]
 send(msg.chat_id_, msg.id_,Text)
 return false
 end
 if text == 'م5' and DevBot(msg) then
 Text = [[
-🔰┇اوامر المطور الاساسي  
+👁‍🗨┇اوامر المطور الاساسي  
 ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉
-🆔┇حظر عام
-🆔┇الغاء العام
-🆔┇مسح قائمه العام
-🆔┇اضف /حذف مطور 
-🆔┇المطورين
-🆔┇مسح المطورين
-🆔┇اضف/حذف رد للكل 
-🆔┇مسح ردود المطور
-🆔┇ردود المطور 
-🆔┇وضع /حذف كليشه المطور 
+↕️┇حظر عام
+↕️┇الغاء العام
+🗑┇مسح قائمه العام
+📥┇اضف /حذف مطور 
+👁‍🗨┇المطورين
+🗑┇مسح المطورين
+📋┇اضف/حذف رد للكل 
+📋┇مسح ردود المطور
+📋┇ردود المطور 
+📋┇وضع /حذف كليشه المطور 
 
 ☑️┇تحديث  + تحديث السورس 
 
@@ -7682,7 +6011,7 @@ Text = [[
 📈┇الملفات 
 🗑┇مسح جميع الملفات 
 📄┇المتجر 
-📝┇اوامر المطور 
+🏅┇اوامر المطور 
 ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉
 👁‍🗨┇تفعيل /تعطيل
 
@@ -7690,7 +6019,6 @@ Text = [[
 ↕️┇رفع منشئ 
 🗑┇مسح المنشئين الاساسين
 🔘┇المنشئين الاساسين 
-
 ➕┇غادر 
 ➕┇غادر + الايدي
 ➕┇اذاعه 
@@ -7699,7 +6027,7 @@ Text = [[
 ➕┇اذاعه بالتثبيت 
 ➕┇الاحصائيات 
 ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉
-🇺🇸┇CH [@S_SSS7] 
+📡┇CH @Za_ZX
 ]]
 send(msg.chat_id_, msg.id_,Text)
 return false
@@ -7708,16 +6036,7 @@ end
 end ---- Chat_Type = 'GroupBot' 
 end ---- Chat_Type = 'GroupBot' 
 
-if text == 'تفعيل' and DevBot(msg) then
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == 'تفعيل' and DevBot(msg) then 
 if msg.can_be_deleted_ == false then 
 send(msg.chat_id_, msg.id_,'🚸┇البوت ليس ادمن يرجى ترقيتي !') 
 return false  
@@ -7730,7 +6049,7 @@ end
 tdcli_function ({ID = "GetUser",user_id_ = msg.sender_user_id_},function(extra,result,success)
 tdcli_function({ID ="GetChat",chat_id_=msg.chat_id_},function(arg,chat)  
 if database:sismember(bot_id..'TSHAKEA:Chek:Groups',msg.chat_id_) then
-send(msg.chat_id_, msg.id_,'📮┇المجموعه مفعله سابقا ')
+send(msg.chat_id_, msg.id_,'☑┇المجموعه مفعله سابقا ')
 else
 Reply_Status(msg,result.id_,'reply_Add','☑┇تم تفعيل المجموعه ~ '..chat.title_..'')
 database:sadd(bot_id..'TSHAKEA:Chek:Groups',msg.chat_id_)
@@ -7764,16 +6083,7 @@ end,nil)
 end,nil) 
 end,nil)
 end
-if text == 'تعطيل' and DevBot(msg) then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == 'تعطيل' and DevBot(msg) then 
 tdcli_function ({ID = "GetUser",user_id_ = msg.sender_user_id_},function(extra,result,success)
 tdcli_function({ID ="GetChat",chat_id_=msg.chat_id_},function(arg,chat)  
 if not database:sismember(bot_id..'TSHAKEA:Chek:Groups',msg.chat_id_) then
@@ -7809,16 +6119,7 @@ end
 end,nil) 
 end,nil) 
 end
-if text == 'تفعيل' and not DevBot(msg) and not database:get(bot_id..'TSHAKEA:Free:Add:Bots') then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end
+if text == 'تفعيل' and not DevBot(msg) and not database:get(bot_id..'TSHAKEA:Free:Add:Bots') then 
 if msg.can_be_deleted_ == false then 
 send(msg.chat_id_, msg.id_,'🚸┇البوت ليس ادمن يرجى ترقيتي !') 
 return false  
@@ -7884,15 +6185,6 @@ end
 
 if Chat_Type == 'UserBot' then
 if text == '/start' then  
-if AddChannel(msg.sender_user_id_) == false then
-local textchuser = database:get(bot_id..'text:ch:user')
-if textchuser then
-send(msg.chat_id_, msg.id_,'['..textchuser..']')
-else
-send(msg.chat_id_, msg.id_,'👥| لا تستطيع استخدام البوت يرجى الاشتراك في القناة حتى تتمكن من استخدام الاوامر \n 📌| اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
-end
-return false
-end  
 if DevTSHAKEA(msg) then
 local Text = '📥┇مرحبا بك في اوامر المطور الجاهزه'
 local keyboard = {
@@ -8260,16 +6552,15 @@ sendDocument(msg.chat_id_, msg.id_,'./File_Libs/'..bot_id..'.json', '📮┇ ع�
 end
 if text == "تحديث السورس 📥" then
 send(msg.chat_id_,msg.id_,'☑┇تم التحديث')
-os.execute('rm -rf TSHAKEAA.lua')
+os.execute('rm -rf TSHAKEA.lua')
 os.execute('rm -rf Run.lua')
-download_to_file('https://raw.githubusercontent.com/TSHAKEAAD/TSHAKEAA/master/TSHAKEAA.lua', 'TSHAKEAA.lua') 
-download_to_file('https://raw.githubusercontent.com/TSHAKEAAD/TSHAKEAA/master/Run.lua', 'Run.lua') 
-dofile('TSHAKEAA.lua')  
+download_to_file('https://raw.githubusercontent.com/TSHAKEAD/TSHAKEA/master/TSHAKEA.lua', 'TSHAKEA.lua') 
+download_to_file('https://raw.githubusercontent.com/TSHAKEAD/TSHAKEA/master/Run.lua', 'Run.lua') 
+dofile('TSHAKEA.lua')  
 return false
 end
-end
 if text == "تحديث ♻" then
-dofile("TSHAKEAA.lua")  
+dofile("TSHAKEA.lua")  
 send(msg.chat_id_, msg.id_, "☑┇تم التحديث")
 end
 end
@@ -8398,7 +6689,7 @@ if NewCmmd then
 data.message_.content_.text_ = (NewCmmd or data.message_.content_.text_)
 end
 end
-local Name_Bot = (database:get(bot_id.."TSHAKEA:Name:Bot") or "تشاكي")
+local Name_Bot = (database:get(bot_id.."TSHAKEA:Name:Bot") or "TSHAKEA")
 if not database:get(bot_id.."TSHAKEA:Fun_Bots"..msg.chat_id_) then
 if text ==  ""..Name_Bot..' شنو رئيك بهاذا' and tonumber(msg.reply_to_message_id_) > 0 then     
 function FunBot(extra, result, success) 
